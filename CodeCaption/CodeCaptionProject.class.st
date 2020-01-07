@@ -2,41 +2,41 @@
 Comments for a project
 "
 Class {
-	#name : #CodeReviewProject,
+	#name : #CodeCaptionProject,
 	#superclass : #Object,
 	#instVars : [
 		'project',
 		'comments'
 	],
-	#category : #CodeReview
+	#category : #CodeCaption
 }
 
 { #category : #adding }
-CodeReviewProject >> addComment:aComment [
+CodeCaptionProject >> addComment:aComment [
 	comments add: aComment
 ]
 
 { #category : #accessing }
-CodeReviewProject >> comments [
+CodeCaptionProject >> comments [
 	^ comments
 ]
 
 { #category : #accessing }
-CodeReviewProject >> comments: anObject [
+CodeCaptionProject >> comments: anObject [
 	comments := anObject
 ]
 
 { #category : #initialization }
-CodeReviewProject >> initialize [
+CodeCaptionProject >> initialize [
 	comments:= OrderedCollection new.
 ]
 
 { #category : #accessing }
-CodeReviewProject >> project [
+CodeCaptionProject >> project [
 	^ project
 ]
 
 { #category : #accessing }
-CodeReviewProject >> project: anObject [
+CodeCaptionProject >> project: anObject [
 	project := anObject
 ]
