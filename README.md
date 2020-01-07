@@ -1,2 +1,2 @@
-# pharo-code_review
-Code review tool for Pharo Smalltalk
+# CodeCaption for Pharo Smalltalk
+CodeCaption is a project aimed to allow developers to add comments to a piece of code.
