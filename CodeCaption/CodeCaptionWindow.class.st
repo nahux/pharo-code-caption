@@ -2,18 +2,18 @@
 Soy una ventana de prueba Spec para comentarios
 "
 Class {
-	#name : #CodeReviewWindow,
+	#name : #CodeCaptionWindow,
 	#superclass : #ComposablePresenter,
 	#instVars : [
 		'project',
 		'textArea',
 		'btnAdd'
 	],
-	#category : #CodeReview
+	#category : #CodeCaption
 }
 
 { #category : #specs }
-CodeReviewWindow class >> defaultSpec [
+CodeCaptionWindow class >> defaultSpec [
 	^ SpecLayout composed
 	newRow: [ :row | row add: #textArea ]
 	origin: 0 @ 0 corner: 1 @ 0.7;
@@ -23,18 +23,18 @@ CodeReviewWindow class >> defaultSpec [
 ]
 
 { #category : #accessing }
-CodeReviewWindow >> btnAdd [
+CodeCaptionWindow >> btnAdd [
 	^ btnAdd
 ]
 
 { #category : #accessing }
-CodeReviewWindow >> btnAdd: anObject [
+CodeCaptionWindow >> btnAdd: anObject [
 	btnAdd := anObject
 ]
 
 { #category : #initialization }
-CodeReviewWindow >> initializePresenter [
-	project:= CodeReviewProject new.
+CodeCaptionWindow >> initializePresenter [
+	project:= CodeCaptionProject new.
 	"Inicializo los widgets"
 	btnAdd := self newButton.
 	textArea := self newText.
@@ -51,8 +51,8 @@ CodeReviewWindow >> initializePresenter [
 ]
 
 { #category : #initialization }
-CodeReviewWindow >> initializeWidgets [
-	project:= CodeReviewProject new.
+CodeCaptionWindow >> initializeWidgets [
+	project:= CodeCaptionProject new.
 	"Inicializo los widgets"
 	btnAdd := self newButton.
 	textArea := self newText.
@@ -69,28 +69,28 @@ CodeReviewWindow >> initializeWidgets [
 ]
 
 { #category : #initialization }
-CodeReviewWindow >> initializeWindow [
+CodeCaptionWindow >> initializeWindow [
 	btnAdd
 		action:
-			[ project addComment: (CodeComment newWithText: self textArea text) ]
+			[ project addComment: (CodeCaptionComment newWithText: self textArea text) ]
 ]
 
 { #category : #accessing }
-CodeReviewWindow >> project [
+CodeCaptionWindow >> project [
 	^ project
 ]
 
 { #category : #accessing }
-CodeReviewWindow >> project: anObject [
+CodeCaptionWindow >> project: anObject [
 	project := anObject
 ]
 
 { #category : #accessing }
-CodeReviewWindow >> textArea [
+CodeCaptionWindow >> textArea [
 	^ textArea
 ]
 
 { #category : #accessing }
-CodeReviewWindow >> textArea: anObject [
+CodeCaptionWindow >> textArea: anObject [
 	textArea := anObject
 ]
