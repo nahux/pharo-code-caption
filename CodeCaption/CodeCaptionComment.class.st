@@ -10,7 +10,7 @@ Class {
 		'resolved',
 		'author'
 	],
-	#category : #CodeCaption
+	#category : #'CodeCaption-Caption'
 }
 
 { #category : #'instance creation' }

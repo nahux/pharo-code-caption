@@ -8,7 +8,7 @@ Class {
 		'project',
 		'comments'
 	],
-	#category : #CodeCaption
+	#category : #'CodeCaption-Caption'
 }
 
 { #category : #adding }

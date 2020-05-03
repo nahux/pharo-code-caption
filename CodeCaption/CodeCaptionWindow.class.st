@@ -9,7 +9,7 @@ Class {
 		'textArea',
 		'btnAdd'
 	],
-	#category : #CodeCaption
+	#category : #'CodeCaption-Caption'
 }
 
 { #category : #specs }

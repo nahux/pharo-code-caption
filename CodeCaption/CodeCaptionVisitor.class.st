@@ -8,7 +8,7 @@ Class {
 		'classes',
 		'statements'
 	],
-	#category : #CodeCaption
+	#category : #'CodeCaption-Caption'
 }
 
 { #category : #accessing }
