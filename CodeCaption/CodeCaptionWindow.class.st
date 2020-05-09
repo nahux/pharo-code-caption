@@ -5,10 +5,12 @@ Class {
 	#name : #CodeCaptionWindow,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'project',
+		'codeCaption',
+		'label',
+		'sourceCode',
+		'whiteSpace',
 		'textArea',
-		'btnAdd',
-		'screen'
+		'btnAdd'
 	],
 	#category : #'CodeCaption-Caption'
 }
@@ -16,8 +18,9 @@ Class {
 { #category : #specs }
 CodeCaptionWindow class >> defaultSpec [
 	^ SpBoxLayout newVertical 
-		add: #screen height: 40;
-		add: #textArea;
+		add: #sourceCode;
+		add: #whiteSpace height: 20;
+		add: #textArea height: 50;
 		add: #btnAdd height: 40;
 	yourself
 ]
@@ -32,29 +35,42 @@ CodeCaptionWindow >> btnAdd: anObject [
 	btnAdd := anObject
 ]
 
+{ #category : #accessing }
+CodeCaptionWindow >> codeCaption [
+	^ codeCaption
+]
+
+{ #category : #accessing }
+CodeCaptionWindow >> codeCaption: aCodeCaptionComment [ 
+	codeCaption:= aCodeCaptionComment
+]
+
 { #category : #initialization }
 CodeCaptionWindow >> connectPresenters [
 	btnAdd
 		action:
-			[ project addComment: (CodeCaptionComment text: self textArea text author: Author uniqueInstance fullName  node: nil) inspect ]
+			[ codeCaption comment: self textArea text; author: Author uniqueInstance fullName. codeCaption inspect ]
 ]
 
 { #category : #initialization }
 CodeCaptionWindow >> initializePresenters [
-	project:= CodeCaptionProject new.
 	"Initialize widgets"
-	screen := self newLabel.
-	btnAdd := self newButton.
+	label := self newLabel.
+	sourceCode := self newCode.
+	whiteSpace := self newNullPresenter.
 	textArea := self newText.
+	btnAdd := self newButton.
 
 	"Setting up Widgets"
-	screen label: 'Add a comment to the code'.
+	sourceCode text: codeCaption node sourceCode; enabled: false; withScrollBars.
+	textArea autoAccept: true; withScrollBars.
 	btnAdd label: 'Add'.
-	textArea autoAccept: true.
+	
 	
 	"Layout order"
 	self focusOrder
-		add: screen;
+		add: sourceCode;
+		add: whiteSpace;
 		add: textArea;
 		add: btnAdd.
 ]
@@ -65,23 +81,29 @@ CodeCaptionWindow >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #accessing }
-CodeCaptionWindow >> project [
-	^ project
+CodeCaptionWindow >> label [
+	^ label
 ]
 
 { #category : #accessing }
-CodeCaptionWindow >> project: anObject [
-	project := anObject
+CodeCaptionWindow >> label: anObject [
+	label := anObject
 ]
 
 { #category : #accessing }
 CodeCaptionWindow >> screen [
-	^ screen
+	^ sourceCode
 ]
 
 { #category : #accessing }
 CodeCaptionWindow >> screen: anObject [
-	screen := anObject
+	sourceCode := anObject
+]
+
+{ #category : #initialization }
+CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
+	super setModelBeforeInitialization: aCodeCaptionComment.
+	codeCaption:= aCodeCaptionComment.
 ]
 
 { #category : #accessing }

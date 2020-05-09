@@ -14,6 +14,13 @@ Class {
 }
 
 { #category : #'instance creation' }
+CodeCaptionComment class >> newWithNode:aProgramNode [
+	^ self new
+		node: aProgramNode ;
+		yourself.
+]
+
+{ #category : #'instance creation' }
 CodeCaptionComment class >> newWithText:aCommentText [
 	^ self new
 		comment: aCommentText;

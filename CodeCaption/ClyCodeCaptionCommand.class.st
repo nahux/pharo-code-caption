@@ -30,7 +30,7 @@ ClyCodeCaptionCommand >> defaultMenuItemName [
 
 { #category : #execution }
 ClyCodeCaptionCommand >> execute [
-	node inspect.
+	(CodeCaptionWindow on: (CodeCaptionComment newWithNode: node)) openWithSpec.
 ]
 
 { #category : #accessing }
