@@ -1,5 +1,6 @@
 "
-Say hello contextmenu.
+Context Menu for the ""Add Caption Button"".
+
 "
 Class {
 	#name : #ClyCodeCaptionCommand,

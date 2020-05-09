@@ -21,3 +21,8 @@ ManifestCodeCaption class >> ruleRBImplementedNotSentRuleV1FalsePositive [
 ManifestCodeCaption class >> ruleRBInconsistentMethodClassificationRuleV1FalsePositive [
 	^ #(#(#(#RGPackageDefinition #(#CodeCaption)) #'2020-04-18T15:07:36.474197-03:00') )
 ]
+
+{ #category : #'code-critics' }
+ManifestCodeCaption class >> ruleRBUtilityMethodsRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#CodeCaptionWindow #initializeWindow: #false)) #'2020-05-09T15:44:18.152475-03:00') )
+]

@@ -20,6 +20,15 @@ CodeCaptionComment class >> newWithText:aCommentText [
 		yourself.
 ]
 
+{ #category : #'instance creation' }
+CodeCaptionComment class >> text:aCommentText author:anAuthor node: aProgramNode [
+	^ self new
+		comment: aCommentText;
+		author: anAuthor;
+		node: aProgramNode;  
+		yourself.
+]
+
 { #category : #accessing }
 CodeCaptionComment >> author [
 	^ author

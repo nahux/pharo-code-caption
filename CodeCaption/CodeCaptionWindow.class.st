@@ -3,22 +3,22 @@ Soy una ventana de prueba Spec para comentarios
 "
 Class {
 	#name : #CodeCaptionWindow,
-	#superclass : #ComposablePresenter,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'project',
 		'textArea',
-		'btnAdd'
+		'btnAdd',
+		'screen'
 	],
 	#category : #'CodeCaption-Caption'
 }
 
 { #category : #specs }
 CodeCaptionWindow class >> defaultSpec [
-	^ SpecLayout composed
-	newRow: [ :row | row add: #textArea ]
-	origin: 0 @ 0 corner: 1 @ 0.7;
-	newRow: [ :row | row add: #btnAdd ]
-	origin: 0 @ 0.7 corner: 1 @ 1;
+	^ SpBoxLayout newVertical 
+		add: #screen height: 40;
+		add: #textArea;
+		add: #btnAdd height: 40;
 	yourself
 ]
 
@@ -33,46 +33,35 @@ CodeCaptionWindow >> btnAdd: anObject [
 ]
 
 { #category : #initialization }
-CodeCaptionWindow >> initializePresenter [
-	project:= CodeCaptionProject new.
-	"Inicializo los widgets"
-	btnAdd := self newButton.
-	textArea := self newText.
-
-	"Configuro widgets"
-	btnAdd label: 'Agregar'.
-	textArea autoAccept: true.
-	
-	"Especifico el orden"
-	self focusOrder
-		add: textArea;
-		add: btnAdd.
-		
-]
-
-{ #category : #initialization }
-CodeCaptionWindow >> initializeWidgets [
-	project:= CodeCaptionProject new.
-	"Inicializo los widgets"
-	btnAdd := self newButton.
-	textArea := self newText.
-
-	"Configuro widgets"
-	btnAdd label: 'Agregar'.
-	textArea autoAccept: true.
-	
-	"Especifico el orden"
-	self focusOrder
-		add: textArea;
-		add: btnAdd.
-		
-]
-
-{ #category : #initialization }
-CodeCaptionWindow >> initializeWindow [
+CodeCaptionWindow >> connectPresenters [
 	btnAdd
 		action:
-			[ project addComment: (CodeCaptionComment newWithText: self textArea text) ]
+			[ project addComment: (CodeCaptionComment text: self textArea text author: Author uniqueInstance fullName  node: nil) inspect ]
+]
+
+{ #category : #initialization }
+CodeCaptionWindow >> initializePresenters [
+	project:= CodeCaptionProject new.
+	"Initialize widgets"
+	screen := self newLabel.
+	btnAdd := self newButton.
+	textArea := self newText.
+
+	"Setting up Widgets"
+	screen label: 'Add a comment to the code'.
+	btnAdd label: 'Add'.
+	textArea autoAccept: true.
+	
+	"Layout order"
+	self focusOrder
+		add: screen;
+		add: textArea;
+		add: btnAdd.
+]
+
+{ #category : #initialization }
+CodeCaptionWindow >> initializeWindow: aWindowPresenter [ 
+	aWindowPresenter title: 'CodeCaption'.
 ]
 
 { #category : #accessing }
@@ -83,6 +72,16 @@ CodeCaptionWindow >> project [
 { #category : #accessing }
 CodeCaptionWindow >> project: anObject [
 	project := anObject
+]
+
+{ #category : #accessing }
+CodeCaptionWindow >> screen [
+	^ screen
+]
+
+{ #category : #accessing }
+CodeCaptionWindow >> screen: anObject [
+	screen := anObject
 ]
 
 { #category : #accessing }
