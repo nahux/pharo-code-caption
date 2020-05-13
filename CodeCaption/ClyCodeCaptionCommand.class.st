@@ -24,6 +24,11 @@ ClyCodeCaptionCommand >> applyResultInContext: aToolContext [
 ]
 
 { #category : #accessing }
+ClyCodeCaptionCommand >> defaultMenuIconName [
+	^#recentMessages
+]
+
+{ #category : #accessing }
 ClyCodeCaptionCommand >> defaultMenuItemName [
 	^'Add Code Caption'.
 ]
