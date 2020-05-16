@@ -6,29 +6,29 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'project',
-		'comments'
+		'codeCaptions'
 	],
 	#category : #'CodeCaption-Caption'
 }
 
 { #category : #adding }
-CodeCaptionProject >> addComment:aComment [
-	comments add: aComment
+CodeCaptionProject >> addCodeCaption:aComment [
+	codeCaptions add: aComment
 ]
 
 { #category : #accessing }
-CodeCaptionProject >> comments [
-	^ comments
+CodeCaptionProject >> codeCaptions [
+	^ codeCaptions
 ]
 
 { #category : #accessing }
-CodeCaptionProject >> comments: anObject [
-	comments := anObject
+CodeCaptionProject >> codeCaptions: anObject [
+	codeCaptions := anObject
 ]
 
 { #category : #initialization }
 CodeCaptionProject >> initialize [
-	comments:= OrderedCollection new.
+	codeCaptions:= OrderedCollection new.
 ]
 
 { #category : #accessing }

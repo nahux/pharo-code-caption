@@ -25,6 +25,21 @@ CodeCaptionWindow class >> defaultSpec [
 	yourself
 ]
 
+{ #category : #adding }
+CodeCaptionWindow >> addCodeCaptionToPackage: package [
+	| projectClass |
+	projectClass:= package packageCodeCaption: ('CodeCaptionProject', package name onlyLetters).
+	projectClass ifNil: [ self createCodeCaptionProjectFor: package name ]
+				ifNotNil: [ "self addCodeCaptionToProject: (projectClass allInstances first)" ].
+
+]
+
+{ #category : #adding }
+CodeCaptionWindow >> addCodeCaptionToProject: aCodeCaptionProject [
+	codeCaption comment: self textArea text; author: Author uniqueInstance fullName. 
+	aCodeCaptionProject addCodeCaption: codeCaption.
+]
+
 { #category : #accessing }
 CodeCaptionWindow >> btnAdd [
 	^ btnAdd
@@ -49,7 +64,22 @@ CodeCaptionWindow >> codeCaption: aCodeCaptionComment [
 CodeCaptionWindow >> connectPresenters [
 	btnAdd
 		action:
-			[ codeCaption comment: self textArea text; author: Author uniqueInstance fullName. codeCaption inspect ]
+			[ self addCodeCaptionToPackage: (codeCaption node methodNode methodClass package) ]
+]
+
+{ #category : #adding }
+CodeCaptionWindow >> createCodeCaptionProjectFor: packageName [
+	|tag projectClass |
+	tag := 'CodeCaptionProject'.
+	projectClass:= CodeCaptionProject subclass: (tag, packageName onlyLetters) asSymbol
+			instanceVariableNames: ''
+			classVariableNames: ''
+			poolDictionaries: ''
+			package: packageName.
+	projectClass 
+		tagWith: tag;
+		comment: 'Code Caption Project to store all the Code Caption comments in the package'.
+	self addCodeCaptionToProject: projectClass.
 ]
 
 { #category : #initialization }

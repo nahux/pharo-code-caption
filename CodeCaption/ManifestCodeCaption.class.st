@@ -13,6 +13,11 @@ ManifestCodeCaption class >> ruleRBClassNotReferencedRuleV1FalsePositive [
 ]
 
 { #category : #'code-critics' }
+ManifestCodeCaption class >> ruleRBGlobalVariablesUsageV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#'ClyCodeCaptionCommand class' #canBeExecutedInContext: #true)) #'2020-05-16T16:16:53.92994-03:00') )
+]
+
+{ #category : #'code-critics' }
 ManifestCodeCaption class >> ruleRBImplementedNotSentRuleV1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#CodeCaptionVisitor #visitSourceCode: #false)) #'2020-04-26T19:18:33.010248-03:00') )
 ]

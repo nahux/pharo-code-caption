@@ -3,7 +3,7 @@ Context Menu for the ""Add Caption Button"".
 
 "
 Class {
-	#name : #ClyCodeCaptionCommand,
+	#name : #CodeCaptionAddCommand,
 	#superclass : #CmdCommand,
 	#instVars : [
 		'node'
@@ -11,45 +11,51 @@ Class {
 	#category : #'CodeCaption-UI Context'
 }
 
+{ #category : #testing }
+CodeCaptionAddCommand class >> canBeExecutedInContext: aToolContext [
+	^ (Smalltalk globals includesKey: #IceLog)
+		and: [ (IceRepository registeredRepositoryIncludingPackage: aToolContext lastSelectedMethod package) notNil ]
+]
+
 { #category : #activation }
-ClyCodeCaptionCommand class >> sourceCodeMenuActivation [
+CodeCaptionAddCommand class >> sourceCodeMenuActivation [
 	<classAnnotation>
 	
 	^SycSourceCodeMenuActivation byRootGroupItemOrder: 100000 for: ClyMethodSourceCodeContext
 ]
 
 { #category : #execution }
-ClyCodeCaptionCommand >> applyResultInContext: aToolContext [
+CodeCaptionAddCommand >> applyResultInContext: aToolContext [
 	aToolContext selectedSourceNode.
 ]
 
 { #category : #accessing }
-ClyCodeCaptionCommand >> defaultMenuIconName [
+CodeCaptionAddCommand >> defaultMenuIconName [
 	^#recentMessages
 ]
 
 { #category : #accessing }
-ClyCodeCaptionCommand >> defaultMenuItemName [
+CodeCaptionAddCommand >> defaultMenuItemName [
 	^'Add Code Caption'.
 ]
 
 { #category : #execution }
-ClyCodeCaptionCommand >> execute [
+CodeCaptionAddCommand >> execute [
 	(CodeCaptionWindow on: (CodeCaptionComment newWithNode: node)) openWithSpec.
 ]
 
 { #category : #accessing }
-ClyCodeCaptionCommand >> node [
+CodeCaptionAddCommand >> node [
 	^ node
 ]
 
 { #category : #accessing }
-ClyCodeCaptionCommand >> node: anObject [
+CodeCaptionAddCommand >> node: anObject [
 	node := anObject
 ]
 
 { #category : #execution }
-ClyCodeCaptionCommand >> prepareFullExecutionInContext: aToolContext [
+CodeCaptionAddCommand >> prepareFullExecutionInContext: aToolContext [
 	super prepareFullExecutionInContext: aToolContext.
 	
 	node := aToolContext selectedSourceNode  .
