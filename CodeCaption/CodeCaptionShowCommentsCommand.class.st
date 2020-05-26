@@ -25,8 +25,28 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #CodeCaptionShowCommentsCommand,
 	#superclass : #SycMethodCommand,
+	#instVars : [
+		'method',
+		'codeCaptionProject',
+		'packageName',
+		'package'
+	],
 	#category : #'CodeCaption-UI Context'
 }
+
+{ #category : #activation }
+CodeCaptionShowCommentsCommand class >> methodContextMenuActivation [
+	<classAnnotation>
+	
+	^CmdContextMenuActivation byItemOf: CmdExtraMenuGroup for: ClyMethod asCalypsoItemContext
+]
+
+{ #category : #activation }
+CodeCaptionShowCommentsCommand class >> methodTabIconActivation [
+	<classAnnotation>
+	
+	^ClyBrowserTabCommandActivation for: ClyMethod asCalypsoItemContext
+]
 
 { #category : #accessing }
 CodeCaptionShowCommentsCommand >> defaultMenuIconName [
@@ -45,5 +65,16 @@ CodeCaptionShowCommentsCommand >> description [
 
 { #category : #execution }
 CodeCaptionShowCommentsCommand >> execute [
-	CodeCaptionComment allInstances last inspect.
+	(CodeCaptionListWindow on: (codeCaptionProject)) openWithSpec.
+]
+
+{ #category : #execution }
+CodeCaptionShowCommentsCommand >> prepareFullExecutionInContext: aToolContext [
+	super prepareFullExecutionInContext: aToolContext.
+	
+	method := aToolContext lastSelectedMethod.
+	package := method package.
+	codeCaptionProject:= CodeCaptionProject allInstances 
+								detect: [ :p | p package == packageName  ] 
+								ifNone: [codeCaptionProject:= CodeCaptionProject new].
 ]

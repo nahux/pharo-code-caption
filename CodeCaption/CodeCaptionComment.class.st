@@ -1,5 +1,6 @@
 "
-Comentario asociado a porción de código
+I'm a Code Caption Comment.
+I have the reference to a Node in the source code and a comment related to it.
 "
 Class {
 	#name : #CodeCaptionComment,

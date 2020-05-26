@@ -6,6 +6,7 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'codeCaption',
+		'codeCaptionProject',
 		'label',
 		'sourceCode',
 		'whiteSpace',
@@ -26,18 +27,11 @@ CodeCaptionWindow class >> defaultSpec [
 ]
 
 { #category : #adding }
-CodeCaptionWindow >> addCodeCaptionToPackage: package [
-	| projectClass |
-	projectClass:= package packageCodeCaption: ('CodeCaptionProject', package name onlyLetters).
-	projectClass ifNil: [ self createCodeCaptionProjectFor: package name ]
-				ifNotNil: [ "self addCodeCaptionToProject: (projectClass allInstances first)" ].
-
-]
-
-{ #category : #adding }
-CodeCaptionWindow >> addCodeCaptionToProject: aCodeCaptionProject [
+CodeCaptionWindow >> addCodeCaptionToProject [
 	codeCaption comment: self textArea text; author: Author uniqueInstance fullName. 
-	aCodeCaptionProject addCodeCaption: codeCaption.
+	codeCaptionProject 
+		addCodeCaption: codeCaption; 
+		package: (codeCaption node methodNode methodClass package).
 ]
 
 { #category : #accessing }
@@ -60,26 +54,22 @@ CodeCaptionWindow >> codeCaption: aCodeCaptionComment [
 	codeCaption:= aCodeCaptionComment
 ]
 
-{ #category : #initialization }
-CodeCaptionWindow >> connectPresenters [
-	btnAdd
-		action:
-			[ self addCodeCaptionToPackage: (codeCaption node methodNode methodClass package) ]
+{ #category : #accessing }
+CodeCaptionWindow >> codeCaptionProject [
+	^ codeCaptionProject
 ]
 
-{ #category : #adding }
-CodeCaptionWindow >> createCodeCaptionProjectFor: packageName [
-	|tag projectClass |
-	tag := 'CodeCaptionProject'.
-	projectClass:= CodeCaptionProject subclass: (tag, packageName onlyLetters) asSymbol
-			instanceVariableNames: ''
-			classVariableNames: ''
-			poolDictionaries: ''
-			package: packageName.
-	projectClass 
-		tagWith: tag;
-		comment: 'Code Caption Project to store all the Code Caption comments in the package'.
-	self addCodeCaptionToProject: projectClass.
+{ #category : #accessing }
+CodeCaptionWindow >> codeCaptionProject: anObject [
+	codeCaptionProject := anObject
+]
+
+{ #category : #initialization }
+CodeCaptionWindow >> connectPresenters [
+	"Add the CodeCaption to the project and open the project window"
+	btnAdd
+		action:
+			[ self addCodeCaptionToProject. self openCodeCaptionListWindow ]
 ]
 
 { #category : #initialization }
@@ -121,6 +111,11 @@ CodeCaptionWindow >> label: anObject [
 	label := anObject
 ]
 
+{ #category : #adding }
+CodeCaptionWindow >> openCodeCaptionListWindow [
+	(CodeCaptionListWindow on: (codeCaptionProject)) openWithSpec.
+]
+
 { #category : #accessing }
 CodeCaptionWindow >> screen [
 	^ sourceCode
@@ -133,8 +128,13 @@ CodeCaptionWindow >> screen: anObject [
 
 { #category : #initialization }
 CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
+	| packageName |
 	super setModelBeforeInitialization: aCodeCaptionComment.
 	codeCaption:= aCodeCaptionComment.
+	packageName:= codeCaption node methodNode methodClass package.
+	codeCaptionProject:= CodeCaptionProject allInstances 
+								detect: [ :p | p package == packageName ] 
+								ifNone: [codeCaptionProject:= CodeCaptionProject new. codeCaptionProject package: packageName].
 ]
 
 { #category : #accessing }

@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'project',
-		'codeCaptions'
+		'codeCaptions',
+		'package'
 	],
 	#category : #'CodeCaption-Caption'
 }
@@ -29,6 +30,16 @@ CodeCaptionProject >> codeCaptions: anObject [
 { #category : #initialization }
 CodeCaptionProject >> initialize [
 	codeCaptions:= OrderedCollection new.
+]
+
+{ #category : #accessing }
+CodeCaptionProject >> package [
+	^ package
+]
+
+{ #category : #accessing }
+CodeCaptionProject >> package: anObject [
+	package := anObject
 ]
 
 { #category : #accessing }
