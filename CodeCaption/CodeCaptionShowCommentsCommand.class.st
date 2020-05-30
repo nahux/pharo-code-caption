@@ -1,26 +1,5 @@
 "
-I am a copy of class SycCopyMethodNameToClypboardCommand. This comment is copied from there, and might not be entirely accurate
-
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
-
-For the Class part:  State a one line summary. For example, ""I represent a paragraph of text"".
-
-For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
-
-For the Collaborators Part: State my main collaborators and one line about how I interact with them. 
-
-Public API and Key Messages
-
-- message one   
-- message two 
-- (for bonus points) how to create instances.
-
-   One simple example is simply gorgeous.
- 
-Internal Representation and Key Implementation Points.
-
-
-    Implementation Points
+I'm a command to show all code captions in a package
 "
 Class {
 	#name : #CodeCaptionShowCommentsCommand,
@@ -65,7 +44,9 @@ CodeCaptionShowCommentsCommand >> description [
 
 { #category : #execution }
 CodeCaptionShowCommentsCommand >> execute [
-	(CodeCaptionListWindow on: (codeCaptionProject)) openWithSpec.
+	((codeCaptionProject isNotNil) and: (codeCaptionProject package isNotNil))
+	ifTrue:  [(CodeCaptionListWindow on: (codeCaptionProject)) openWithSpec];
+	ifFalse: [ self inform: 'No CodeCaptions found for this package.' ].
 ]
 
 { #category : #execution }
@@ -74,7 +55,7 @@ CodeCaptionShowCommentsCommand >> prepareFullExecutionInContext: aToolContext [
 	
 	method := aToolContext lastSelectedMethod.
 	package := method package.
+	"TODO: get STON of code caption project"
 	codeCaptionProject:= CodeCaptionProject allInstances 
-								detect: [ :p | p package == packageName  ] 
-								ifNone: [codeCaptionProject:= CodeCaptionProject new].
+								detect: [ :p | p package == packageName  ].
 ]

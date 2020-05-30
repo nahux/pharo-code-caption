@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #'code-critics' }
+ManifestCodeCaption class >> ruleGRIvarNeitherReadNorWrittenRuleV1FalsePositive [
+	^ #(#(#(#RGClassDefinition #(#CodeCaptionApplication)) #'2020-05-30T19:02:54.006273-03:00') )
+]
+
+{ #category : #'code-critics' }
 ManifestCodeCaption class >> ruleRBClassNotReferencedRuleV1FalsePositive [
 	^ #(#(#(#RGPackageDefinition #(#CodeCaption)) #'2020-04-18T15:06:37.170197-03:00') )
 ]
