@@ -57,6 +57,6 @@ CodeCaptionAddCommand >> node: anObject [
 { #category : #execution }
 CodeCaptionAddCommand >> prepareFullExecutionInContext: aToolContext [
 	super prepareFullExecutionInContext: aToolContext.
-	
+	aToolContext selectedSourceNode.
 	node := aToolContext selectedSourceNode  .
 ]

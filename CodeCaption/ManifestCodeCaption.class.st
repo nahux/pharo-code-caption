@@ -13,6 +13,11 @@ ManifestCodeCaption class >> ruleGRIvarNeitherReadNorWrittenRuleV1FalsePositive 
 ]
 
 { #category : #'code-critics' }
+ManifestCodeCaption class >> ruleRBClassNameInSelectorRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#'CodeCaptionProject class' #loadCodeCaptionProject: #true)) #'2020-06-04T20:23:54.601351-03:00') )
+]
+
+{ #category : #'code-critics' }
 ManifestCodeCaption class >> ruleRBClassNotReferencedRuleV1FalsePositive [
 	^ #(#(#(#RGPackageDefinition #(#CodeCaption)) #'2020-04-18T15:06:37.170197-03:00') )
 ]

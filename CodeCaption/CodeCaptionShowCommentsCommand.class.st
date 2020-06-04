@@ -44,9 +44,13 @@ CodeCaptionShowCommentsCommand >> description [
 
 { #category : #execution }
 CodeCaptionShowCommentsCommand >> execute [
-	((codeCaptionProject isNotNil) and: (codeCaptionProject package isNotNil))
-	ifTrue:  [(CodeCaptionListWindow on: (codeCaptionProject)) openWithSpec];
-	ifFalse: [ self inform: 'No CodeCaptions found for this package.' ].
+	codeCaptionProject isNotNil
+		ifFalse: [ self inform: 'No CodeCaptions found for this package.' ]
+		ifTrue: [ 
+			codeCaptionProject package isNotNil
+				ifTrue: [ 
+					(CodeCaptionListWindow on: codeCaptionProject) openWithSpec ];
+				ifFalse: [ self inform: 'No CodeCaptions found for this package.' ] ]
 ]
 
 { #category : #execution }
@@ -55,7 +59,5 @@ CodeCaptionShowCommentsCommand >> prepareFullExecutionInContext: aToolContext [
 	
 	method := aToolContext lastSelectedMethod.
 	package := method package.
-	"TODO: get STON of code caption project"
-	codeCaptionProject:= CodeCaptionProject allInstances 
-								detect: [ :p | p package == packageName  ].
+	codeCaptionProject:= CodeCaptionProject loadCodeCaptionProject: ('CodeCaptions/',package name,'_CodeCaptionProject.STON').
 ]

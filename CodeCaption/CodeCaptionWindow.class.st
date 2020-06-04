@@ -28,11 +28,11 @@ CodeCaptionWindow class >> defaultSpec [
 
 { #category : #adding }
 CodeCaptionWindow >> addCodeCaptionToProject [
-	codeCaption comment: self textArea text; author: Author uniqueInstance fullName. 
+	codeCaption comment: self textArea text; author: Author uniqueInstance fullName.
 	codeCaptionProject 
 		addCodeCaption: codeCaption; 
 		package: (codeCaption node methodNode methodClass package).
-	codeCaptionProject saveCaptionsTo: 'pharo-local\iceberg\nahux\pharo-code-caption\captions.STON'.
+	codeCaptionProject saveCodeCaptionProjectTo: ('CodeCaptions/',codeCaptionProject package name,'_CodeCaptionProject.STON').
 ]
 
 { #category : #accessing }
@@ -129,17 +129,14 @@ CodeCaptionWindow >> screen: anObject [
 
 { #category : #initialization }
 CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
-	| packageName |
+	| package |
 	super setModelBeforeInitialization: aCodeCaptionComment.
 	codeCaption := aCodeCaptionComment.
-	packageName := codeCaption node methodNode methodClass package.
-	codeCaptionProject := CodeCaptionProject allInstances
-		                      detect: [ :p | p package == packageName ]
-		                      ifNone: [ 
-			                      codeCaptionProject := CodeCaptionProject new.
-			                      codeCaptionProject
-				                      package: packageName codeCaptionProject;
-				                      loadCaptions: 'pharo-local\iceberg\nahux\pharo-code-caption\captions.STON' ]
+	package := codeCaption node methodNode methodClass package.
+	codeCaptionProject := CodeCaptionProject loadCodeCaptionProject:('CodeCaptions/',package name , '_captions.STON').
+	codeCaptionProject ifNil: [ 
+		codeCaptionProject := CodeCaptionProject new.
+		codeCaptionProject package: package ]
 ]
 
 { #category : #accessing }

@@ -13,6 +13,16 @@ Class {
 }
 
 { #category : #'instance creation' }
+CodeCaptionProject class >> loadCodeCaptionProject: aFilePath [
+	| working_dir fstream |
+	working_dir := FileSystem disk workingDirectory.
+	(working_dir/aFilePath) exists
+	ifTrue: [ fstream := (working_dir/aFilePath) readStream. ^(STON fromString: (fstream contents)).]
+	ifFalse: [ ^nil ].
+	
+]
+
+{ #category : #'instance creation' }
 CodeCaptionProject class >> newWithGitDir: aFilePath [
 	"Constructor with gir directory"
 	^ self new
@@ -70,10 +80,10 @@ CodeCaptionProject >> package: anObject [
 ]
 
 { #category : #'file in/out' }
-CodeCaptionProject >> saveCaptionsTo: aFilePath [
+CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath [
 	| ston workingDir fstream |
-	ston := STON toStringPretty: self codeCaptions.
-	workingDir := FileSystem disk workingDirectory.
+	ston := STON toStringPretty: self.
+	workingDir := FileSystem disk workingDirectory. (workingDir / aFilePath) ensureCreateFile.
 	fstream := (workingDir / aFilePath) writeStream.
 	fstream nextPutAll: ston.
 	fstream close
