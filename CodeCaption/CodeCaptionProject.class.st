@@ -17,7 +17,7 @@ CodeCaptionProject class >> loadCodeCaptionProject: aFilePath [
 	| working_dir fstream |
 	working_dir := FileSystem disk workingDirectory.
 	(working_dir/aFilePath) exists
-	ifTrue: [ fstream := (working_dir/aFilePath) readStream. ^(STON fromString: (fstream contents)).]
+	ifTrue: [ fstream := (working_dir/aFilePath) readStream. ^(STON fromString: (fstream contents)) loadNodes.]
 	ifFalse: [ ^nil ].
 	
 ]
@@ -65,8 +65,13 @@ CodeCaptionProject >> loadCaptions: aFilePath [
 	| working_dir fstream |
 	working_dir := FileSystem disk workingDirectory.
 	fstream := (working_dir/aFilePath) readStream.
-	codeCaptions := (STON fromString: (fstream contents)).
+	codeCaptions := (STON fromSton: (fstream contents)).
 	fstream close.
+]
+
+{ #category : #'as yet unclassified' }
+CodeCaptionProject >> loadNodes [
+	codeCaptions do: [ :c | c node: (Object readFrom: c node) ]
 ]
 
 { #category : #accessing }

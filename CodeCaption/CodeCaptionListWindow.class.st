@@ -6,6 +6,7 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'ccList',
+		'ccDetail',
 		'codeCaptionProject'
 	],
 	#category : #'CodeCaption-Caption'
@@ -18,6 +19,16 @@ CodeCaptionListWindow class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #accessing }
+CodeCaptionListWindow >> ccDetail [
+	^ ccDetail
+]
+
+{ #category : #accessing }
+CodeCaptionListWindow >> ccDetail: anObject [
+	ccDetail := anObject
+]
+
 { #category : #initialization }
 CodeCaptionListWindow >> initializePresenters [ 
 	"Initialize the window layout"
@@ -25,8 +36,14 @@ CodeCaptionListWindow >> initializePresenters [
 		addColumn: (SpStringTableColumn title: 'Comment' evaluated: #comment);
 		addColumn: (SpStringTableColumn title: 'Resolved' evaluated: #resolved);
 		addColumn: (SpStringTableColumn title: 'Author' evaluated: #author);
-		yourself.
+		activateOnDoubleClick;
+		whenActivatedDo: [ :selection | (CodeCaptionWindow on: (codeCaptionProject codeCaptions at: selection selectedIndex)) openWithSpec].
 		
+"	ccDetail:= self instantiate: CodeCaptionWindow.
+	ccDetail enable: false.
+	
+	ccList transmitTo: ccDetail.
+		"
 	self updatePresenter.
 		
 ]
