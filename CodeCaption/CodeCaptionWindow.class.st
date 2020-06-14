@@ -11,7 +11,8 @@ Class {
 		'sourceCode',
 		'whiteSpace',
 		'textArea',
-		'btnAdd'
+		'btnAdd',
+		'editMode'
 	],
 	#category : #'CodeCaption-Caption'
 }
@@ -70,7 +71,17 @@ CodeCaptionWindow >> connectPresenters [
 	"Add the CodeCaption to the project and open the project window"
 	btnAdd
 		action:
-			[ self addCodeCaptionToProject. self openCodeCaptionListWindow ]
+			[ self addCodeCaptionToProject. self openCodeCaptionListWindow. self window close]
+]
+
+{ #category : #accessing }
+CodeCaptionWindow >> editMode [
+	^ editMode
+]
+
+{ #category : #accessing }
+CodeCaptionWindow >> editMode: anObject [
+	editMode := anObject
 ]
 
 { #category : #initialization }
@@ -81,12 +92,13 @@ CodeCaptionWindow >> initializePresenters [
 	sourceCode withoutSyntaxHighlight.
 	whiteSpace := self newNullPresenter.
 	textArea := self newText.
+	codeCaption comment ifNotNil: [ textArea text: codeCaption comment ].
 	btnAdd := self newButton.
 
 	"Setting up Widgets"
 	sourceCode text: codeCaption node sourceCode; enabled: false; withScrollBars.
 	textArea autoAccept: true; withScrollBars.
-	btnAdd label: 'Add'.
+	editMode ifTrue:[btnAdd label: 'Apply'] ifFalse:[ btnAdd label: 'Add'].
 	
 	
 	"Layout order"
@@ -132,8 +144,9 @@ CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
 	| package |
 	super setModelBeforeInitialization: aCodeCaptionComment.
 	codeCaption := aCodeCaptionComment.
+	editMode := codeCaption comment ifNil: [ false ] ifNotNil: [ true ].
 	package := codeCaption node methodNode methodClass package.
-	codeCaptionProject := CodeCaptionProject loadCodeCaptionProject:('CodeCaptions/',package name , '_captions.STON').
+	codeCaptionProject := CodeCaptionProject loadCodeCaptionProject: 'CodeCaptions/' , package name , '_captions.STON'.
 	codeCaptionProject ifNil: [ 
 		codeCaptionProject := CodeCaptionProject new.
 		codeCaptionProject package: package ]

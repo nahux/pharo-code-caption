@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'ccList',
 		'ccDetail',
-		'codeCaptionProject'
+		'codeCaptionProject',
+		'editMode'
 	],
 	#category : #'CodeCaption-Caption'
 }
@@ -39,11 +40,6 @@ CodeCaptionListWindow >> initializePresenters [
 		activateOnDoubleClick;
 		whenActivatedDo: [ :selection | (CodeCaptionWindow on: (codeCaptionProject codeCaptions at: selection selectedIndex)) openWithSpec].
 		
-"	ccDetail:= self instantiate: CodeCaptionWindow.
-	ccDetail enable: false.
-	
-	ccList transmitTo: ccDetail.
-		"
 	self updatePresenter.
 		
 ]
