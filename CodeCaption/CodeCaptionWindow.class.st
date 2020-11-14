@@ -1,5 +1,5 @@
 "
-Soy una ventana de prueba Spec para comentarios
+I'm the window for adding a new Code Caption comment to the project.
 "
 Class {
 	#name : #CodeCaptionWindow,
@@ -29,11 +29,19 @@ CodeCaptionWindow class >> defaultSpec [
 
 { #category : #adding }
 CodeCaptionWindow >> addCodeCaptionToProject [
-	codeCaption comment: self textArea text; author: Author uniqueInstance fullName.
-	codeCaptionProject 
-		addCodeCaption: codeCaption; 
-		package: (codeCaption node methodNode methodClass package).
-	codeCaptionProject saveCodeCaptionProjectTo: ('CodeCaptions/',codeCaptionProject package name,'_CodeCaptionProject.STON').
+	codeCaption
+		comment: self textArea text;
+		author: Author uniqueInstance fullName.
+	codeCaptionProject
+		addCodeCaption: codeCaption;
+		addPackage: codeCaption node methodNode methodClass package.
+	codeCaptionProject
+		saveCodeCaptionProjectTo:
+			'pharo-local/'
+				, codeCaption repository repositoryDirectory path pathString
+				, '/CodeCaptions/'
+				, codeCaption node methodNode methodClass package name
+				, '_CodeCaptions.STON'
 ]
 
 { #category : #accessing }
@@ -139,17 +147,26 @@ CodeCaptionWindow >> screen: anObject [
 	sourceCode := anObject
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing model' }
 CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
 	| package |
 	super setModelBeforeInitialization: aCodeCaptionComment.
 	codeCaption := aCodeCaptionComment.
 	editMode := codeCaption comment ifNil: [ false ] ifNotNil: [ true ].
 	package := codeCaption node methodNode methodClass package.
-	codeCaptionProject := CodeCaptionProject loadCodeCaptionProject: 'CodeCaptions/' , package name , '_captions.STON'.
-	codeCaptionProject ifNil: [ 
-		codeCaptionProject := CodeCaptionProject new.
-		codeCaptionProject package: package ]
+	"TODO: Fix this so many packages are available"
+	codeCaptionProject := CodeCaptionProject
+		loadCodeCaptionProject:
+			'pharo-local/'
+				, aCodeCaptionComment repository repositoryDirectory path pathString
+				, '/CodeCaptions/' , package name , '_CodeCaptions.STON'.
+	codeCaptionProject
+		ifNil: [ codeCaptionProject := CodeCaptionProject new.
+			codeCaptionProject
+				addPackage: package;
+				gitDirectory:
+					'pharo-local/'
+						, aCodeCaptionComment repository repositoryDirectory path pathString ]
 ]
 
 { #category : #accessing }

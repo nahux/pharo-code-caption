@@ -6,7 +6,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'codeCaptions',
-		'package',
+		'packages',
 		'gitDirectory'
 	],
 	#category : #'CodeCaption-Caption'
@@ -36,6 +36,11 @@ CodeCaptionProject >> addCodeCaption:aComment [
 ]
 
 { #category : #accessing }
+CodeCaptionProject >> addPackage: aPackage [ 
+	packages add: aPackage
+]
+
+{ #category : #accessing }
 CodeCaptionProject >> codeCaptions [
 	^ codeCaptions
 ]
@@ -58,6 +63,7 @@ CodeCaptionProject >> gitDirectory: anObject [
 { #category : #initialization }
 CodeCaptionProject >> initialize [
 	codeCaptions:= OrderedCollection new.
+	packages:= Set new.
 ]
 
 { #category : #'file in/out' }
@@ -69,19 +75,19 @@ CodeCaptionProject >> loadCaptions: aFilePath [
 	fstream close.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'file in/out' }
 CodeCaptionProject >> loadNodes [
 	codeCaptions do: [ :c | c node: (Object readFrom: c node) ]
 ]
 
 { #category : #accessing }
-CodeCaptionProject >> package [
-	^ package
+CodeCaptionProject >> packages [
+	^ packages
 ]
 
 { #category : #accessing }
-CodeCaptionProject >> package: anObject [
-	package := anObject
+CodeCaptionProject >> packages: aCollection [
+	packages := aCollection
 ]
 
 { #category : #'file in/out' }

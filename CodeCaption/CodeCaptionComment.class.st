@@ -6,6 +6,7 @@ Class {
 	#name : #CodeCaptionComment,
 	#superclass : #Object,
 	#instVars : [
+		'repository',
 		'node',
 		'comment',
 		'resolved',
@@ -18,6 +19,14 @@ Class {
 CodeCaptionComment class >> newWithNode:aProgramNode [
 	^ self new
 		node: aProgramNode ;
+		yourself.
+]
+
+{ #category : #'instance creation' }
+CodeCaptionComment class >> newWithNode:aProgramNode repository: anIceLibgitRepository [
+	^ self new
+		node: aProgramNode ;
+		repository: anIceLibgitRepository ;
 		yourself.
 ]
 
@@ -65,6 +74,16 @@ CodeCaptionComment >> node [
 { #category : #accessing }
 CodeCaptionComment >> node: anObject [
 	node := anObject
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> repository [
+	^ repository
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> repository: anObject [
+	repository := anObject
 ]
 
 { #category : #actions }

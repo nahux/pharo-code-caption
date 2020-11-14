@@ -46,18 +46,21 @@ CodeCaptionShowCommentsCommand >> description [
 CodeCaptionShowCommentsCommand >> execute [
 	codeCaptionProject isNotNil
 		ifFalse: [ self inform: 'No CodeCaptions found for this package.' ]
-		ifTrue: [ 
-			codeCaptionProject package isNotNil
-				ifTrue: [ 
-					(CodeCaptionListWindow on: codeCaptionProject) openWithSpec ];
-				ifFalse: [ self inform: 'No CodeCaptions found for this package.' ] ]
+		ifTrue: [ (CodeCaptionListWindow on: codeCaptionProject) openWithSpec ]
 ]
 
 { #category : #execution }
 CodeCaptionShowCommentsCommand >> prepareFullExecutionInContext: aToolContext [
+	| repository |
 	super prepareFullExecutionInContext: aToolContext.
-	
 	method := aToolContext lastSelectedMethod.
 	package := method package.
-	codeCaptionProject:= CodeCaptionProject loadCodeCaptionProject: ('CodeCaptions/',package name,'_CodeCaptionProject.STON').
+
+	"Get repository from context"
+	repository := IceRepository registry
+		detect: [ :each | each includesPackageNamed: package name ].
+	codeCaptionProject := CodeCaptionProject
+		loadCodeCaptionProject:
+			'pharo-local/' , repository repositoryDirectory path pathString
+				, '/CodeCaptions/' , package name , '_CodeCaptionProject.STON'
 ]

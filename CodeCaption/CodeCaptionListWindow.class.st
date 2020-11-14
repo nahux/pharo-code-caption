@@ -46,7 +46,7 @@ CodeCaptionListWindow >> initializePresenters [
 
 { #category : #initialization }
 CodeCaptionListWindow >> initializeWindow: aWindowPresenter [ 
-	aWindowPresenter title: 'List of CodeCaption for ', codeCaptionProject package name.
+	aWindowPresenter title: 'List of CodeCaption for ', codeCaptionProject gitDirectory .
 ]
 
 { #category : #'accessing model' }

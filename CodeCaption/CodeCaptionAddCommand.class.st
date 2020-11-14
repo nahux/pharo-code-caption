@@ -6,6 +6,7 @@ Class {
 	#name : #CodeCaptionAddCommand,
 	#superclass : #CmdCommand,
 	#instVars : [
+		'repository',
 		'node'
 	],
 	#category : #'CodeCaption-UI Context'
@@ -41,7 +42,7 @@ CodeCaptionAddCommand >> defaultMenuItemName [
 
 { #category : #execution }
 CodeCaptionAddCommand >> execute [
-	(CodeCaptionWindow on: (CodeCaptionComment newWithNode: node)) openWithSpec.
+	(CodeCaptionWindow on: (CodeCaptionComment newWithNode: node repository: repository)) openWithSpec.
 ]
 
 { #category : #accessing }
@@ -56,7 +57,24 @@ CodeCaptionAddCommand >> node: anObject [
 
 { #category : #execution }
 CodeCaptionAddCommand >> prepareFullExecutionInContext: aToolContext [
+	| method packageName |
 	super prepareFullExecutionInContext: aToolContext.
+	
+	"Set Iceberg repository"
+	method := aToolContext lastSelectedMethod.
+	packageName := method package name.
+	repository := IceRepository registry detect: [ :each | each includesPackageNamed: packageName ].
+	"Set AST node"
 	aToolContext selectedSourceNode.
 	node := aToolContext selectedSourceNode  .
+]
+
+{ #category : #accessing }
+CodeCaptionAddCommand >> repository [
+	^ repository
+]
+
+{ #category : #accessing }
+CodeCaptionAddCommand >> repository: anObject [
+	repository := anObject
 ]
