@@ -77,7 +77,7 @@ CodeCaptionProject >> loadCaptions: aFilePath [
 
 { #category : #'file in/out' }
 CodeCaptionProject >> loadNodes [
-	codeCaptions do: [ :c | c node: (Object readFrom: c node) ]
+	codeCaptions do: [ :c | c node: (Object readFrom: c node). c methodNode: (Object readFrom: c methodNode) ]
 ]
 
 { #category : #accessing }

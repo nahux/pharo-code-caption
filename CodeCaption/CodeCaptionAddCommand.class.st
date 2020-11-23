@@ -42,7 +42,13 @@ CodeCaptionAddCommand >> defaultMenuItemName [
 
 { #category : #execution }
 CodeCaptionAddCommand >> execute [
-	(CodeCaptionWindow on: (CodeCaptionComment newWithNode: node repository: repository)) openWithSpec.
+	(CodeCaptionWindow
+		on:
+			(CodeCaptionComment
+				newWithNode: node
+				package: node methodNode methodClass package
+				methodNode: node methodNode
+				repository: repository)) openWithSpec
 ]
 
 { #category : #accessing }

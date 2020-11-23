@@ -7,6 +7,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'repository',
+		'package',
+		'methodNode',
 		'node',
 		'comment',
 		'resolved',
@@ -19,6 +21,25 @@ Class {
 CodeCaptionComment class >> newWithNode:aProgramNode [
 	^ self new
 		node: aProgramNode ;
+		yourself.
+]
+
+{ #category : #'instance creation' }
+CodeCaptionComment class >> newWithNode:aProgramNode methodNode:aMethodNode repository: anIceLibgitRepository [
+	^ self new
+		node: aProgramNode ;
+		methodNode: aMethodNode;
+		repository: anIceLibgitRepository ;
+		yourself.
+]
+
+{ #category : #'instance creation' }
+CodeCaptionComment class >> newWithNode:aProgramNode package: anASTPackage methodNode:aMethodNode repository: anIceLibgitRepository [
+	^ self new
+		package: anASTPackage;
+		node: aProgramNode ;
+		methodNode: aMethodNode;
+		repository: anIceLibgitRepository ;
 		yourself.
 ]
 
@@ -67,6 +88,16 @@ CodeCaptionComment >> comment: anObject [
 ]
 
 { #category : #accessing }
+CodeCaptionComment >> methodNode [
+	^ methodNode
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> methodNode: anObject [
+	methodNode := anObject
+]
+
+{ #category : #accessing }
 CodeCaptionComment >> node [
 	^ node
 ]
@@ -74,6 +105,16 @@ CodeCaptionComment >> node [
 { #category : #accessing }
 CodeCaptionComment >> node: anObject [
 	node := anObject
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> package [
+	^ package
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> package: anObject [
+	package := anObject
 ]
 
 { #category : #accessing }

@@ -38,6 +38,16 @@ ManifestCodeCaption class >> ruleRBInconsistentMethodClassificationRuleV1FalsePo
 ]
 
 { #category : #'code-critics' }
+ManifestCodeCaption class >> ruleRBLongMethodsRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#GrandPrixTest #setUp #false)) #'2020-11-23T16:08:19.646192-03:00') )
+]
+
+{ #category : #'code-critics' }
+ManifestCodeCaption class >> ruleRBModifiesCollectionRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#GrandPrix #race #false)) #'2020-11-23T15:50:57.001192-03:00') )
+]
+
+{ #category : #'code-critics' }
 ManifestCodeCaption class >> ruleRBUtilityMethodsRuleV1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#CodeCaptionWindow #initializeWindow: #false)) #'2020-05-09T15:44:18.152475-03:00') )
 ]

@@ -149,16 +149,20 @@ CodeCaptionWindow >> screen: anObject [
 
 { #category : #'accessing model' }
 CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
-	| package |
+	| package repository |
 	super setModelBeforeInitialization: aCodeCaptionComment.
 	codeCaption := aCodeCaptionComment.
 	editMode := codeCaption comment ifNil: [ false ] ifNotNil: [ true ].
-	package := codeCaption node methodNode methodClass package.
+	package := codeCaption package.
+	
+	repository := IceRepository registry
+		detect: [ :each | each includesPackageNamed: package name ].
+	
 	"TODO: Fix this so many packages are available"
 	codeCaptionProject := CodeCaptionProject
 		loadCodeCaptionProject:
 			'pharo-local/'
-				, aCodeCaptionComment repository repositoryDirectory path pathString
+				, repository repositoryDirectory path pathString
 				, '/CodeCaptions/' , package name , '_CodeCaptions.STON'.
 	codeCaptionProject
 		ifNil: [ codeCaptionProject := CodeCaptionProject new.
@@ -166,7 +170,7 @@ CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
 				addPackage: package;
 				gitDirectory:
 					'pharo-local/'
-						, aCodeCaptionComment repository repositoryDirectory path pathString ]
+						, repository repositoryDirectory path pathString ]
 ]
 
 { #category : #accessing }

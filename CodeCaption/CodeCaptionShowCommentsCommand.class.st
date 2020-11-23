@@ -62,5 +62,5 @@ CodeCaptionShowCommentsCommand >> prepareFullExecutionInContext: aToolContext [
 	codeCaptionProject := CodeCaptionProject
 		loadCodeCaptionProject:
 			'pharo-local/' , repository repositoryDirectory path pathString
-				, '/CodeCaptions/' , package name , '_CodeCaptionProject.STON'
+				, '/CodeCaptions/' , package name , '_CodeCaptions.STON'
 ]
