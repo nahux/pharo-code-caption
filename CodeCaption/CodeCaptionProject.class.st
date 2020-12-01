@@ -70,14 +70,19 @@ CodeCaptionProject >> initialize [
 CodeCaptionProject >> loadCaptions: aFilePath [
 	| working_dir fstream |
 	working_dir := FileSystem disk workingDirectory.
-	fstream := (working_dir/aFilePath) readStream.
-	codeCaptions := (STON fromSton: (fstream contents)).
+	fstream := (working_dir / aFilePath) readStream.
+	codeCaptions := STON fromSton: fstream contents.
 	fstream close.
 ]
 
 { #category : #'file in/out' }
 CodeCaptionProject >> loadNodes [
-	codeCaptions do: [ :c | c node: (Object readFrom: c node). c methodNode: (Object readFrom: c methodNode) ]
+	codeCaptions
+		do: [ :c | 
+			c node: (Object readFrom: c node).
+			c methodNode: (Object readFrom: c methodNode).
+			"Call to setUp the nodes after reading from STON"
+			c setUpFromSTON ]
 ]
 
 { #category : #accessing }

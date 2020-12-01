@@ -141,3 +141,14 @@ CodeCaptionComment >> resolved [
 CodeCaptionComment >> resolved: anObject [
 	resolved := anObject
 ]
+
+{ #category : #initialization }
+CodeCaptionComment >> setUpFromSTON [
+	| no |
+	no := nil.
+	self methodNode
+		nodesDo: [ :n | 
+			n dump = self node dump
+				ifTrue: [ no := n ] ].
+	no ifNotNil: [ self node: no ] ifNil: [ self node: self methodNode  ]
+]

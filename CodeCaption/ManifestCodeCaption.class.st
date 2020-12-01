@@ -29,7 +29,7 @@ ManifestCodeCaption class >> ruleRBGlobalVariablesUsageV1FalsePositive [
 
 { #category : #'code-critics' }
 ManifestCodeCaption class >> ruleRBImplementedNotSentRuleV1FalsePositive [
-	^ #(#(#(#RGMethodDefinition #(#CodeCaptionVisitor #visitSourceCode: #false)) #'2020-04-26T19:18:33.010248-03:00') )
+	^ #(#(#(#RGMethodDefinition #(#CodeCaptionVisitor #visitSourceCode: #false)) #'2020-04-26T19:18:33.010248-03:00') #(#(#RGMethodDefinition #(#CodeCaptionProject #loadCaptions: #false)) #'2020-12-01T19:44:22.374054-03:00') )
 ]
 
 { #category : #'code-critics' }
