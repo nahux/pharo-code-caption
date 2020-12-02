@@ -34,13 +34,15 @@ CodeCaptionWindow >> addCodeCaptionToProject [
 		author: Author uniqueInstance fullName.
 	codeCaptionProject
 		addCodeCaption: codeCaption;
-		addPackage: codeCaption node methodNode methodClass package.
+		addPackage: codeCaption package.
 	codeCaptionProject
 		saveCodeCaptionProjectTo:
 			'pharo-local/'
-				, codeCaption repository repositoryDirectory path pathString
-				, '/CodeCaptions/'
-				, codeCaption node methodNode methodClass package name
+				,
+					(IceRepository registry
+						detect: [ :each | each includesPackageNamed: codeCaption package name ])
+						repositoryDirectory path pathString , '/CodeCaptions/'
+				, codeCaption package name
 				, '_CodeCaptions.STON'
 ]
 
