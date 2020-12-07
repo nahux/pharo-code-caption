@@ -5,6 +5,7 @@ Class {
 	#name : #CodeCaptionProject,
 	#superclass : #Object,
 	#instVars : [
+		'name',
 		'codeCaptions',
 		'packages',
 		'gitDirectory'
@@ -31,7 +32,8 @@ CodeCaptionProject class >> newWithGitDir: aFilePath [
 ]
 
 { #category : #adding }
-CodeCaptionProject >> addCodeCaption:aComment [
+CodeCaptionProject >> addCodeCaption: aComment [
+	codeCaptions remove: aComment ifAbsent: [].
 	codeCaptions add: aComment
 ]
 
@@ -62,7 +64,7 @@ CodeCaptionProject >> gitDirectory: anObject [
 
 { #category : #initialization }
 CodeCaptionProject >> initialize [
-	codeCaptions:= OrderedCollection new.
+	codeCaptions:= Set new.
 	packages:= Set new.
 ]
 
@@ -83,6 +85,16 @@ CodeCaptionProject >> loadNodes [
 			c methodNode: (Object readFrom: c methodNode).
 			"Call to setUp the nodes after reading from STON"
 			c setUpFromSTON ]
+]
+
+{ #category : #accessing }
+CodeCaptionProject >> name [
+	^ name
+]
+
+{ #category : #accessing }
+CodeCaptionProject >> name: aProjectName [
+	name := aProjectName
 ]
 
 { #category : #accessing }

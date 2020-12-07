@@ -42,13 +42,14 @@ CodeCaptionAddCommand >> defaultMenuItemName [
 
 { #category : #execution }
 CodeCaptionAddCommand >> execute [
-	(CodeCaptionWindow
-		on:
-			(CodeCaptionComment
-				newWithNode: node
-				package: node methodNode methodClass package
-				methodNode: node methodNode
-				repository: repository)) openWithSpec
+	repository repositoryDirectory
+		ifNotNil: [ (CodeCaptionWindow
+				on:
+					(CodeCaptionComment
+						newWithNode: node
+						package: node methodNode methodClass package
+						methodNode: node methodNode
+						repository: repository)) openWithSpec ]
 ]
 
 { #category : #accessing }
@@ -65,14 +66,17 @@ CodeCaptionAddCommand >> node: anObject [
 CodeCaptionAddCommand >> prepareFullExecutionInContext: aToolContext [
 	| method packageName |
 	super prepareFullExecutionInContext: aToolContext.
-	
+
 	"Set Iceberg repository"
 	method := aToolContext lastSelectedMethod.
 	packageName := method package name.
-	repository := IceRepository registry detect: [ :each | each includesPackageNamed: packageName ].
-	"Set AST node"
-	aToolContext selectedSourceNode.
-	node := aToolContext selectedSourceNode  .
+	repository := IceRepository registry
+		detect: [ :each | each includesPackageNamed: packageName ].
+	repository repositoryDirectory
+		ifNil: [ self inform: 'No repository was found for this package!' ]
+		ifNotNil: [ "Set AST node"
+			aToolContext selectedSourceNode.
+			node := aToolContext selectedSourceNode ]
 ]
 
 { #category : #accessing }

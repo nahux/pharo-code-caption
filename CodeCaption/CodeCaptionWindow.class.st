@@ -14,7 +14,7 @@ Class {
 		'btnAdd',
 		'editMode'
 	],
-	#category : #'CodeCaption-Caption'
+	#category : #'CodeCaption-UI'
 }
 
 { #category : #specs }
@@ -157,6 +157,7 @@ CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
 	editMode := codeCaption comment ifNil: [ false ] ifNotNil: [ true ].
 	package := codeCaption package.
 	
+	"TODO: add error/warning when repository repositoryDirectory is nil. It needs a repository"
 	repository := IceRepository registry
 		detect: [ :each | each includesPackageNamed: package name ].
 	
@@ -169,6 +170,7 @@ CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
 	codeCaptionProject
 		ifNil: [ codeCaptionProject := CodeCaptionProject new.
 			codeCaptionProject
+				name: repository name;
 				addPackage: package;
 				gitDirectory:
 					'pharo-local/'

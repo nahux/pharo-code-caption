@@ -6,6 +6,7 @@ Class {
 	#name : #CodeCaptionComment,
 	#superclass : #Object,
 	#instVars : [
+		'id',
 		'repository',
 		'package',
 		'methodNode',
@@ -67,6 +68,12 @@ CodeCaptionComment class >> text:aCommentText author:anAuthor node: aProgramNode
 		yourself.
 ]
 
+{ #category : #initialization }
+CodeCaptionComment >> = anotherCodeCaptionComment [
+	^ self id = anotherCodeCaptionComment id
+	
+]
+
 { #category : #accessing }
 CodeCaptionComment >> author [
 	^ author
@@ -85,6 +92,36 @@ CodeCaptionComment >> comment [
 { #category : #accessing }
 CodeCaptionComment >> comment: anObject [
 	comment := anObject
+]
+
+{ #category : #initialization }
+CodeCaptionComment >> hash [
+	^ self id
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> id [
+	^ id
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> id: anObject [
+	id := anObject
+]
+
+{ #category : #initialization }
+CodeCaptionComment >> initialize [ 
+	id:= self identityHash .
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> methodClass [ 
+	^ self methodNode methodClass
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> methodName [ 
+	^ self methodNode selector
 ]
 
 { #category : #accessing }

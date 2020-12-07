@@ -6,11 +6,9 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'ccList',
-		'ccDetail',
-		'codeCaptionProject',
-		'editMode'
+		'codeCaptionProject'
 	],
-	#category : #'CodeCaption-Caption'
+	#category : #'CodeCaption-UI'
 }
 
 { #category : #specs }
@@ -20,28 +18,25 @@ CodeCaptionListWindow class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #accessing }
-CodeCaptionListWindow >> ccDetail [
-	^ ccDetail
-]
-
-{ #category : #accessing }
-CodeCaptionListWindow >> ccDetail: anObject [
-	ccDetail := anObject
+{ #category : #'accessing model' }
+CodeCaptionListWindow >> codeCaptionProject [
+	^ codeCaptionProject 
 ]
 
 { #category : #initialization }
-CodeCaptionListWindow >> initializePresenters [ 
+CodeCaptionListWindow >> initializePresenters [
 	"Initialize the window layout"
-	ccList:= self newTable
+
+	ccList := self newTable
+		"TODO: add class"
+		addColumn: (SpStringTableColumn title: 'Method' evaluated: #methodName);
 		addColumn: (SpStringTableColumn title: 'Comment' evaluated: #comment);
 		addColumn: (SpStringTableColumn title: 'Resolved' evaluated: #resolved);
 		addColumn: (SpStringTableColumn title: 'Author' evaluated: #author);
 		activateOnDoubleClick;
-		whenActivatedDo: [ :selection | (CodeCaptionWindow on: (codeCaptionProject codeCaptions at: selection selectedIndex)) openWithSpec].
-		
-	self updatePresenter.
-		
+		whenActivatedDo:
+				[ :selection | (CodeCaptionWindow on: selection selectedItem) openWithSpec ].
+	self updatePresenter
 ]
 
 { #category : #initialization }
@@ -52,7 +47,13 @@ CodeCaptionListWindow >> initializeWindow: aWindowPresenter [
 { #category : #'accessing model' }
 CodeCaptionListWindow >> setModelBeforeInitialization: aCodeCaptionProject [
 	super setModelBeforeInitialization: aCodeCaptionProject.
-	codeCaptionProject:= aCodeCaptionProject.
+	self class
+		allInstancesDo: [ :w | 
+			w codeCaptionProject
+				ifNotNil: [ w codeCaptionProject name
+						ifNotNil: [ w codeCaptionProject name = aCodeCaptionProject name
+								ifTrue: [ w delete ] ] ] ].
+	codeCaptionProject := aCodeCaptionProject
 ]
 
 { #category : #initialization }
