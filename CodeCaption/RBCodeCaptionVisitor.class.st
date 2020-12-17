@@ -62,131 +62,60 @@ RBCodeCaptionVisitor >> visitCascadeNode: aCascadeNode [
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitLiteralArrayNode: aLiteralArrayNode [
-	stream
-		nextPutAll: aLiteralArrayNode class name;
-		nextPutAll: ' value: #('.
-	(aLiteralArrayNode contents collect: [ :each | each value ]) printOn: stream delimiter: ' '.
-	stream nextPutAll: ')'
+	aLiteralArrayNode dump == node dump
+		ifTrue: [ astNode := aLiteralArrayNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitLiteralNode: aLiteralNode [
-	self visitLiteralValueNode: aLiteralNode
+	aLiteralNode dump == node dump
+		ifTrue: [ astNode := aLiteralNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitLiteralValueNode: aLiteralValueNode [
-	stream
-		nextPutAll: aLiteralValueNode class name;
-		nextPutAll: ' value: '.
-	aLiteralValueNode value printOn: stream
+	aLiteralValueNode dump == node dump
+		ifTrue: [ astNode := aLiteralValueNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitMessageNode: aMessageNode [
-	stream
-		nextPutAll: aMessageNode class name;
-		nextPutAll: ' receiver: ('.
-	aMessageNode receiver acceptVisitor: self.
-	stream nextPutAll: ') selector: '.
-	aMessageNode selector printOn: stream.
-	aMessageNode arguments
-		ifNotEmpty: [ stream nextPutAll: ' arguments: {'.
-			aMessageNode arguments
-				do: [ :each | 
-					each acceptVisitor: self.
-					stream nextPutAll: '. ' ].
-			stream nextPut: $} ]
+	aMessageNode dump == node dump
+		ifTrue: [ astNode := aMessageNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitMethodNode: aMethodNode [
-	| hasPragmas |
-	hasPragmas := aMethodNode pragmas isNotEmpty.
-	hasPragmas
-		ifTrue: [ stream nextPut: $( ].
-	stream
-		nextPutAll: aMethodNode class name;
-		nextPutAll: ' selector: '.
-	aMethodNode selector printOn: stream.
-	aMethodNode arguments
-		ifNotEmpty: [ stream nextPutAll: ' arguments: {'.
-			aMethodNode arguments
-				do: [ :each | 
-					each acceptVisitor:self.
-					stream nextPutAll: '. ' ].
-			stream nextPut: $} ].
-	aMethodNode body
-		ifNotNil: [ stream nextPutAll: ' body: ('.
-			aMethodNode body acceptVisitor:self.
-			stream nextPut: $) ].
-	hasPragmas
-		ifFalse: [ ^ aMethodNode ].
-	stream nextPutAll: ') pragmas: {'.
-	aMethodNode pragmas
-		do: [ :each | 
-			each acceptVisitor: self.
-			stream nextPutAll: '. ' ].
-	stream nextPut: $}
+	aMethodNode dump == node dump
+		ifTrue: [ astNode := aMethodNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitParseErrorNode: aParseErrorNode [
-	stream
-		nextPutAll: aParseErrorNode class name;
-		nextPutAll: ' errorMessage: '.
-	aParseErrorNode errorMessage printOn: stream.
-	stream nextPutAll: ' value: '.
-	aParseErrorNode value printOn: stream.
-	stream nextPutAll: ' at: '.
-	aParseErrorNode start printOn: stream
+	aParseErrorNode dump == node dump
+		ifTrue: [ astNode := aParseErrorNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitPragmaNode: aPragmaNode [
-	stream
-		nextPutAll: aPragmaNode class name;
-		nextPutAll: ' selector: '.
-	aPragmaNode selector printOn: stream.
-	stream nextPutAll: ' arguments: {'.
-	aPragmaNode arguments
-		do: [ :each | 
-			each acceptVisitor: self.
-			stream nextPutAll: '. ' ].
-	stream nextPut: $}
+	aPragmaNode dump == node dump
+		ifTrue: [ astNode := aPragmaNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitReturnNode: aReturnNode [
-	stream
-		nextPutAll: aReturnNode class name;
-		nextPutAll: ' value: ('.
-	aReturnNode value acceptVisitor:self.
-	stream nextPut: $)
+	aReturnNode dump == node dump
+		ifTrue: [ astNode := aReturnNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitSequenceNode: aSequenceNode [
-	stream nextPutAll: aSequenceNode class name.
-	aSequenceNode temporaries
-		ifNotEmpty: [ stream nextPutAll: ' temporaries: {'.
-			aSequenceNode temporaries
-				do: [ :each | 
-					each acceptVisitor: self.
-					stream nextPutAll: '. ' ].
-			stream nextPut: $} ].
-	stream nextPutAll: ' statements: {'.
-	aSequenceNode statements
-		do: [ :each | 
-			each acceptVisitor: self.
-			stream nextPutAll: '. ' ].
-	stream nextPut: $}
+	aSequenceNode dump == node dump
+		ifTrue: [ astNode := aSequenceNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitVariableNode: aVariableNode [
-	stream
-		nextPutAll: aVariableNode class name;
-		nextPutAll: ' named: '.
-	aVariableNode name printOn: stream
+	aVariableNode dump == node dump
+		ifTrue: [ astNode := aVariableNode ]
 ]
