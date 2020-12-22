@@ -24,8 +24,8 @@ GrandPrix >> country [
 ]
 
 { #category : #accessing }
-GrandPrix >> country: aCountry [
-	country := aCountry
+GrandPrix >> country: anObject [
+	country := anObject
 ]
 
 { #category : #accessing }

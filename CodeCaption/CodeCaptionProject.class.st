@@ -24,11 +24,13 @@ CodeCaptionProject class >> loadCodeCaptionProject: aFilePath [
 ]
 
 { #category : #'instance creation' }
-CodeCaptionProject class >> newWithGitDir: aFilePath [
-	"Constructor with gir directory"
-	^ self new
-		gitDirectory: aFilePath;
-		yourself.
+CodeCaptionProject class >> loadProject: aFilePath package: aPackage [
+	| working_dir fstream |
+	working_dir := FileSystem disk workingDirectory.
+	(working_dir/aFilePath) exists
+	ifTrue: [ fstream := (working_dir/aFilePath) readStream. ^(STON fromString: (fstream contents)) loadNodesForPackage: aPackage.]
+	ifFalse: [ ^nil ].
+	
 ]
 
 { #category : #adding }
@@ -83,6 +85,25 @@ CodeCaptionProject >> loadNodes [
 		do: [ :c | 
 			c node: (Object readFrom: c node).
 			c methodNode: (Object readFrom: c methodNode).
+			"Call to setUp the nodes after reading from STON"
+			c setUpFromSTON ]
+]
+
+{ #category : #'file in/out' }
+CodeCaptionProject >> loadNodesForPackage: aPackage [
+	| allMethods foundMethod |
+	allMethods := aPackage methods.
+	codeCaptions
+		do: [ :c | 
+			c package: aPackage.
+			c node: (Object readFrom: c node).
+			c methodNode: (Object readFrom: c methodNode).
+			foundMethod := nil.
+			allMethods
+				do: [ :pm | 
+					pm methodNode newSource = c methodNode newSource
+						ifTrue: [ foundMethod := pm methodNode ] ].
+			foundMethod ifNotNil: [ c methodNode: foundMethod ].
 			"Call to setUp the nodes after reading from STON"
 			c setUpFromSTON ]
 ]

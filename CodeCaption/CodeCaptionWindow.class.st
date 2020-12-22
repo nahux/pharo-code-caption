@@ -29,21 +29,19 @@ CodeCaptionWindow class >> defaultSpec [
 
 { #category : #adding }
 CodeCaptionWindow >> addCodeCaptionToProject [
+	| repository |
 	codeCaption
 		comment: self textArea text;
 		author: Author uniqueInstance fullName.
 	codeCaptionProject
 		addCodeCaption: codeCaption;
 		addPackage: codeCaption package.
+	repository := IceRepository registry
+		detect: [ :each | each includesPackageNamed: codeCaption package name ].
 	codeCaptionProject
 		saveCodeCaptionProjectTo:
-			'pharo-local/'
-				,
-					(IceRepository registry
-						detect: [ :each | each includesPackageNamed: codeCaption package name ])
-						repositoryDirectory path pathString , '/CodeCaptions/'
-				, codeCaption package name
-				, '_CodeCaptions.STON'
+			'pharo-local/' , repository repositoryDirectory path pathString
+				, '/CodeCaptions/' , repository name , '_CodeCaptions.STON'
 ]
 
 { #category : #accessing }
@@ -156,25 +154,23 @@ CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
 	codeCaption := aCodeCaptionComment.
 	editMode := codeCaption comment ifNil: [ false ] ifNotNil: [ true ].
 	package := codeCaption package.
-	
+
 	"TODO: add error/warning when repository repositoryDirectory is nil. It needs a repository"
 	repository := IceRepository registry
 		detect: [ :each | each includesPackageNamed: package name ].
-	
+
 	"TODO: Fix this so many packages are available"
 	codeCaptionProject := CodeCaptionProject
-		loadCodeCaptionProject:
-			'pharo-local/'
-				, repository repositoryDirectory path pathString
-				, '/CodeCaptions/' , package name , '_CodeCaptions.STON'.
+		loadProject:
+			'pharo-local/' , repository repositoryDirectory path pathString
+				, '/CodeCaptions/' , repository name , '_CodeCaptions.STON'
+		package: package.
 	codeCaptionProject
 		ifNil: [ codeCaptionProject := CodeCaptionProject new.
 			codeCaptionProject
 				name: repository name;
 				addPackage: package;
-				gitDirectory:
-					'pharo-local/'
-						, repository repositoryDirectory path pathString ]
+				gitDirectory: 'pharo-local/' , repository repositoryDirectory path pathString ]
 ]
 
 { #category : #accessing }
