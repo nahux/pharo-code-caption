@@ -29,6 +29,11 @@ RBCodeCaptionVisitor >> astNode: anRBProgramNode [
 	astNode := anRBProgramNode
 ]
 
+{ #category : #helper }
+RBCodeCaptionVisitor >> compareNodeTo: anotherRBProgramNode [
+	^ self node newSource = (anotherRBProgramNode source copyFrom: anotherRBProgramNode start to: anotherRBProgramNode stop)
+]
+
 { #category : #accessing }
 RBCodeCaptionVisitor >> node [
 	^ node
@@ -41,81 +46,88 @@ RBCodeCaptionVisitor >> node: aParsedProgramNode [
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitArrayNode: anArrayNode [
-	anArrayNode dump == node dump ifTrue: [ astNode := anArrayNode ]
+	(self compareNodeTo: anArrayNode)
+		ifTrue: [ astNode := anArrayNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitAssignmentNode: anAssignmentNode [
-	anAssignmentNode dump == node dump ifTrue: [ astNode := anAssignmentNode ]
+	(self compareNodeTo: anAssignmentNode)
+		ifTrue: [ astNode := anAssignmentNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitBlockNode: aBlockNode [
-	aBlockNode dump == node dump ifTrue: [ astNode := aBlockNode ]
+	(self compareNodeTo: aBlockNode)
+		ifTrue: [ astNode := aBlockNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitCascadeNode: aCascadeNode [
-	aCascadeNode dump == node dump
+	(self compareNodeTo: aCascadeNode)
 		ifTrue: [ astNode := aCascadeNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitLiteralArrayNode: aLiteralArrayNode [
-	aLiteralArrayNode dump == node dump
+	(self compareNodeTo: aLiteralArrayNode)
 		ifTrue: [ astNode := aLiteralArrayNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitLiteralNode: aLiteralNode [
-	aLiteralNode dump == node dump
+	(self compareNodeTo: aLiteralNode)
 		ifTrue: [ astNode := aLiteralNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitLiteralValueNode: aLiteralValueNode [
-	aLiteralValueNode dump == node dump
+	(self compareNodeTo: aLiteralValueNode)
 		ifTrue: [ astNode := aLiteralValueNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitMessageNode: aMessageNode [
-	aMessageNode dump == node dump
+	(self compareNodeTo: aMessageNode)
 		ifTrue: [ astNode := aMessageNode ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitMethodNode: aMethodNode [
-	aMethodNode dump == node dump
+	(self compareNodeTo: aMethodNode)
 		ifTrue: [ astNode := aMethodNode ]
+		ifFalse: [ 
+			aMethodNode arguments ifNotEmpty: [ aMethodNode arguments do: [ :each | each acceptVisitor: self ] ].
+			aMethodNode body ifNotNil: [ aMethodNode body acceptVisitor: self ].
+		].
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitParseErrorNode: aParseErrorNode [
-	aParseErrorNode dump == node dump
+	(self compareNodeTo: aParseErrorNode)
 		ifTrue: [ astNode := aParseErrorNode ]
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitPragmaNode: aPragmaNode [
-	aPragmaNode dump == node dump
-		ifTrue: [ astNode := aPragmaNode ]
-]
-
-{ #category : #visiting }
 RBCodeCaptionVisitor >> visitReturnNode: aReturnNode [
-	aReturnNode dump == node dump
+	(self compareNodeTo: aReturnNode)
 		ifTrue: [ astNode := aReturnNode ]
+		ifFalse: [ (aReturnNode value) ifNotNil: [ aReturnNode value acceptVisitor: self ] ]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitSequenceNode: aSequenceNode [
-	aSequenceNode dump == node dump
+	(self compareNodeTo: aSequenceNode)
 		ifTrue: [ astNode := aSequenceNode ]
+		ifFalse: [ 
+			aSequenceNode temporaries ifNotEmpty:
+				[ aSequenceNode temporaries do: [ :each | each acceptVisitor: self ] ].
+			aSequenceNode statements do: [ :each | each acceptVisitor: self ] 
+		]
 ]
 
 { #category : #visiting }
 RBCodeCaptionVisitor >> visitVariableNode: aVariableNode [
-	aVariableNode dump == node dump
+	(self compareNodeTo: aVariableNode)
 		ifTrue: [ astNode := aVariableNode ]
 ]

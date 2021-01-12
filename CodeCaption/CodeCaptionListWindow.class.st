@@ -29,6 +29,7 @@ CodeCaptionListWindow >> initializePresenters [
 
 	ccList := self newTable
 		"TODO: add class"
+		addColumn: (SpStringTableColumn title: 'Reference' evaluated: #nodeFound);
 		addColumn: (SpStringTableColumn title: 'Method' evaluated: #methodName);
 		addColumn: (SpStringTableColumn title: 'Comment' evaluated: #comment);
 		addColumn: (SpStringTableColumn title: 'Resolved' evaluated: #resolved);

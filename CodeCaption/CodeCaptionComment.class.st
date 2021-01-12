@@ -11,6 +11,7 @@ Class {
 		'package',
 		'methodNode',
 		'node',
+		'nodeFound',
 		'comment',
 		'resolved',
 		'author'
@@ -105,6 +106,16 @@ CodeCaptionComment >> node: anObject [
 ]
 
 { #category : #accessing }
+CodeCaptionComment >> nodeFound [
+	^ nodeFound
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> nodeFound: aBoolean [
+	nodeFound := aBoolean
+]
+
+{ #category : #accessing }
 CodeCaptionComment >> package [
 	^ package
 ]
@@ -137,15 +148,4 @@ CodeCaptionComment >> resolved [
 { #category : #accessing }
 CodeCaptionComment >> resolved: anObject [
 	resolved := anObject
-]
-
-{ #category : #initialization }
-CodeCaptionComment >> setUpFromSTON [
-	| no |
-	no := nil.
-	self methodNode
-		nodesDo: [ :n | 
-			n dump = self node dump
-				ifTrue: [ no := n ] ].
-	no ifNotNil: [ self node: no ] ifNil: [ self node: self methodNode  ]
 ]

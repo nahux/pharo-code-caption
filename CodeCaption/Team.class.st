@@ -29,7 +29,7 @@ Team >> drivers: anObject [
 
 { #category : #accessing }
 Team >> initialize [
-	drivers:= OrderedCollection new.
+	drivers := OrderedCollection new
 ]
 
 { #category : #accessing }

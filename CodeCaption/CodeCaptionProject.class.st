@@ -14,16 +14,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-CodeCaptionProject class >> loadCodeCaptionProject: aFilePath [
-	| working_dir fstream |
-	working_dir := FileSystem disk workingDirectory.
-	(working_dir/aFilePath) exists
-	ifTrue: [ fstream := (working_dir/aFilePath) readStream. ^(STON fromString: (fstream contents)) loadNodes.]
-	ifFalse: [ ^nil ].
-	
-]
-
-{ #category : #'instance creation' }
 CodeCaptionProject class >> loadProject: aFilePath package: aPackage [
 	| working_dir fstream |
 	working_dir := FileSystem disk workingDirectory.
@@ -80,16 +70,6 @@ CodeCaptionProject >> loadCaptions: aFilePath [
 ]
 
 { #category : #'file in/out' }
-CodeCaptionProject >> loadNodes [
-	codeCaptions
-		do: [ :c | 
-			c node: (Object readFrom: c node).
-			c methodNode: (Object readFrom: c methodNode).
-			"Call to setUp the nodes after reading from STON"
-			c setUpFromSTON ]
-]
-
-{ #category : #'file in/out' }
 CodeCaptionProject >> loadNodesForPackage: aPackage [
 	| allMethods foundMethod |
 	allMethods := aPackage methods.
@@ -103,9 +83,19 @@ CodeCaptionProject >> loadNodesForPackage: aPackage [
 				do: [ :pm | 
 					pm methodNode newSource = c methodNode newSource
 						ifTrue: [ foundMethod := pm methodNode ] ].
-			foundMethod ifNotNil: [ c methodNode: foundMethod ].
-			"Call to setUp the nodes after reading from STON"
-			c setUpFromSTON ]
+			foundMethod
+				ifNotNil: [ c methodNode: foundMethod.
+					"Search the CodeCaptionComment node in the methodNode to see if it was modified"
+					c nodeFound: (self method: foundMethod hasNode: c node) ].
+				]
+]
+
+{ #category : #helper }
+CodeCaptionProject >> method: aMethodNode hasNode: anRBProgramNode [
+	| visitor |
+	visitor := RBCodeCaptionVisitor newWithNode: anRBProgramNode.
+	aMethodNode acceptVisitor: visitor.
+	visitor astNode ifNotNil: [ ^ true ] ifNil: [ ^ false ]
 ]
 
 { #category : #accessing }
