@@ -34,7 +34,9 @@ Team >> initialize [
 
 { #category : #accessing }
 Team >> name [
-	^ name
+	| elpepe |
+	elpepe:= name.
+	^ elpepe
 ]
 
 { #category : #accessing }
