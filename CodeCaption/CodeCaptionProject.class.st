@@ -76,17 +76,18 @@ CodeCaptionProject >> loadNodesForPackage: aPackage [
 	codeCaptions
 		do: [ :c | 
 			c package: aPackage.
-			c node: (Object readFrom: c node).
-			c methodNode: (Object readFrom: c methodNode).
+			c captionNode node: (Object readFrom: c captionNode node).
+			c captionNode methodNode: (Object readFrom: c captionNode methodNode).
 			foundMethod := nil.
 			allMethods
 				do: [ :pm | 
-					pm methodNode newSource = c methodNode newSource
+					"Compare every method"
+					(pm methodNode) = c captionNode methodNode
 						ifTrue: [ foundMethod := pm methodNode ] ].
 			foundMethod
-				ifNotNil: [ c methodNode: foundMethod.
+				ifNotNil: [ c captionNode methodNode: foundMethod.
 					"Search the CodeCaptionComment node in the methodNode to see if it was modified"
-					c nodeFound: (self method: foundMethod hasNode: c node) ].
+					c nodeFound: (self method: foundMethod hasNode: c captionNode node) ].
 				]
 ]
 

@@ -9,8 +9,7 @@ Class {
 		'id',
 		'repository',
 		'package',
-		'methodNode',
-		'node',
+		'captionNode',
 		'nodeFound',
 		'comment',
 		'resolved',
@@ -23,8 +22,7 @@ Class {
 CodeCaptionComment class >> newWithNode:aProgramNode package: anASTPackage methodNode:aMethodNode repository: anIceLibgitRepository [
 	^ self new
 		package: anASTPackage;
-		node: aProgramNode ;
-		methodNode: aMethodNode;
+		captionNode: ((CodeCaptionNode new) node: aProgramNode; methodNode: aMethodNode  );
 		repository: anIceLibgitRepository ;
 		yourself.
 ]
@@ -43,6 +41,16 @@ CodeCaptionComment >> author [
 { #category : #accessing }
 CodeCaptionComment >> author: anObject [
 	author := anObject
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> captionNode [
+	^ captionNode
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> captionNode: anObject [
+	captionNode := anObject
 ]
 
 { #category : #accessing }
@@ -73,41 +81,22 @@ CodeCaptionComment >> id: anObject [
 { #category : #initialization }
 CodeCaptionComment >> initialize [ 
 	id:= self identityHash .
+	captionNode ifNil: [ captionNode := CodeCaptionNode new ]
 ]
 
 { #category : #accessing }
 CodeCaptionComment >> methodClass [ 
-	^ self methodNode methodClass
+	^ self captionNode methodNode methodClass
 ]
 
 { #category : #accessing }
 CodeCaptionComment >> methodName [ 
-	^ self methodNode selector
-]
-
-{ #category : #accessing }
-CodeCaptionComment >> methodNode [
-	^ methodNode
-]
-
-{ #category : #accessing }
-CodeCaptionComment >> methodNode: anObject [
-	methodNode := anObject
-]
-
-{ #category : #accessing }
-CodeCaptionComment >> node [
-	^ node
-]
-
-{ #category : #accessing }
-CodeCaptionComment >> node: anObject [
-	node := anObject
+	^ self captionNode methodNode selector
 ]
 
 { #category : #accessing }
 CodeCaptionComment >> nodeFound [
-	^ nodeFound
+	nodeFound ifNil: [ ^ false ] ifNotNil: [ ^ nodeFound ]
 ]
 
 { #category : #accessing }

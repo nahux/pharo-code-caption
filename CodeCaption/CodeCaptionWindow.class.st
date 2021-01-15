@@ -104,7 +104,7 @@ CodeCaptionWindow >> initializePresenters [
 	btnAdd := self newButton.
 
 	"Setting up Widgets"
-	sourceCode text: codeCaption node newSource; enabled: false; withScrollBars.
+	sourceCode text: codeCaption captionNode node newSource; enabled: false; withScrollBars.
 	textArea autoAccept: true; withScrollBars.
 	editMode ifTrue:[btnAdd label: 'Apply'] ifFalse:[ btnAdd label: 'Add'].
 	
