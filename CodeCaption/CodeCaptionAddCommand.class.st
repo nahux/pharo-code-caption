@@ -45,11 +45,11 @@ CodeCaptionAddCommand >> execute [
 	repository repositoryDirectory
 		ifNotNil: [ (CodeCaptionWindow
 				on:
-					(CodeCaptionComment
+					((CodeCaptionComment
 						newWithNode: node
 						package: node methodNode methodClass package
 						methodNode: node methodNode
-						repository: repository)) openWithSpec ]
+						repository: repository) nodeFound:true)) openWithSpec ]
 ]
 
 { #category : #accessing }

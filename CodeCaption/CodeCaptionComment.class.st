@@ -22,7 +22,7 @@ Class {
 CodeCaptionComment class >> newWithNode:aProgramNode package: anASTPackage methodNode:aMethodNode repository: anIceLibgitRepository [
 	^ self new
 		package: anASTPackage;
-		captionNode: ((CodeCaptionNode new) node: aProgramNode; methodNode: aMethodNode  );
+		captionNode: ((CodeCaptionNode new) node: aProgramNode; methodNode: aMethodNode; nodeClass: aMethodNode methodClass);
 		repository: anIceLibgitRepository ;
 		yourself.
 ]

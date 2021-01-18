@@ -8,22 +8,12 @@ Class {
 	#name : #CodeCaptionNode,
 	#superclass : #Object,
 	#instVars : [
-		'classNode',
 		'methodNode',
-		'node'
+		'node',
+		'nodeClass'
 	],
 	#category : #'CodeCaption-Caption'
 }
-
-{ #category : #accessing }
-CodeCaptionNode >> classNode [
-	^ classNode
-]
-
-{ #category : #accessing }
-CodeCaptionNode >> classNode: anObject [
-	classNode := anObject
-]
 
 { #category : #accessing }
 CodeCaptionNode >> methodNode [
@@ -43,4 +33,14 @@ CodeCaptionNode >> node [
 { #category : #accessing }
 CodeCaptionNode >> node: anObject [
 	node := anObject
+]
+
+{ #category : #accessing }
+CodeCaptionNode >> nodeClass [
+	^ nodeClass
+]
+
+{ #category : #accessing }
+CodeCaptionNode >> nodeClass: anObject [
+	nodeClass := anObject
 ]
