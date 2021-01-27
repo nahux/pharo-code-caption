@@ -14,6 +14,14 @@ Class {
 }
 
 { #category : #'instance creation' }
+CodeCaptionProject class >> codeCaptionsDirectoryForRepository: anIceLibgitRepository [
+	^ 'pharo-local/'
+		, anIceLibgitRepository repositoryDirectory path pathString
+		, '/CodeCaptions/' , anIceLibgitRepository name
+		, '_CodeCaptions.STON'
+]
+
+{ #category : #'instance creation' }
 CodeCaptionProject class >> loadProject: aFilePath package: aPackage [
 	| working_dir fstream |
 	working_dir := FileSystem disk workingDirectory.

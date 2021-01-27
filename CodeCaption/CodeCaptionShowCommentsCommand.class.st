@@ -60,8 +60,6 @@ CodeCaptionShowCommentsCommand >> prepareFullExecutionInContext: aToolContext [
 	repository := IceRepository registry
 		detect: [ :each | each includesPackageNamed: package name ].
 	codeCaptionProject := CodeCaptionProject
-		loadProject:
-			'pharo-local/' , repository repositoryDirectory path pathString
-				, '/CodeCaptions/' , repository name , '_CodeCaptions.STON'
+		loadProject: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
 		package: package
 ]

@@ -39,9 +39,7 @@ CodeCaptionWindow >> addCodeCaptionToProject [
 	repository := IceRepository registry
 		detect: [ :each | each includesPackageNamed: codeCaption package name ].
 	codeCaptionProject
-		saveCodeCaptionProjectTo:
-			'pharo-local/' , repository repositoryDirectory path pathString
-				, '/CodeCaptions/' , repository name , '_CodeCaptions.STON'
+		saveCodeCaptionProjectTo: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
 ]
 
 { #category : #accessing }
@@ -161,9 +159,7 @@ CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
 
 	"TODO: Fix this so many packages are available"
 	codeCaptionProject := CodeCaptionProject
-		loadProject:
-			'pharo-local/' , repository repositoryDirectory path pathString
-				, '/CodeCaptions/' , repository name , '_CodeCaptions.STON'
+		loadProject: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
 		package: package.
 	codeCaptionProject
 		ifNil: [ codeCaptionProject := CodeCaptionProject new.
