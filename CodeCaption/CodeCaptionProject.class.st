@@ -133,8 +133,20 @@ CodeCaptionProject >> packages: aCollection [
 CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath [
 	| ston workingDir fstream |
 	ston := STON toStringPretty: self.
-	workingDir := FileSystem disk workingDirectory. (workingDir / aFilePath) ensureCreateFile.
+	workingDir := FileSystem disk workingDirectory.
+	(workingDir / aFilePath) ensureCreateFile.
 	fstream := (workingDir / aFilePath) writeStream.
 	fstream nextPutAll: ston.
-	fstream close
+	fstream close.
+	"Commit changes TODO: fix this to use filePath"
+	OSSUnixSubprocess new
+		command: '/usr/bin/git';
+		arguments:
+			#('-C' 'pharo-local/iceberg/nahux/pharo-code-caption/' 'add' 'CodeCaptions/*.STON');
+		run.
+	OSSUnixSubprocess new
+		command: '/usr/bin/git';
+		arguments:
+			#('-C' 'pharo-local/iceberg/nahux/pharo-code-caption/' 'commit' '-m' '[CodeCaption] Added new CodeCaption');
+		run
 ]
