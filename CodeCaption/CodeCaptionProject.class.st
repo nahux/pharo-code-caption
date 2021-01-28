@@ -138,12 +138,12 @@ CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath [
 	fstream := (workingDir / aFilePath) writeStream.
 	fstream nextPutAll: ston.
 	fstream close.
-	"Commit changes TODO: fix this to use filePath"
+	"Commit changes TODO: fix this to use filePath and add CodeCaption info to commit message"
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
 		arguments:
 			#('-C' 'pharo-local/iceberg/nahux/pharo-code-caption/' 'add' 'CodeCaptions/*.STON');
-		run.
+		runAndWait.
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
 		arguments:
