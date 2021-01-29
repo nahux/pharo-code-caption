@@ -138,7 +138,8 @@ CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath [
 	fstream := (workingDir / aFilePath) writeStream.
 	fstream nextPutAll: ston.
 	fstream close.
-	"Commit changes TODO: fix this to use filePath and add CodeCaption info to commit message"
+	"Commit changes (not on windows) TODO: fix this to use filePath and add CodeCaption info to commit message"
+	Smalltalk os isWindows ifTrue: [ ^ self ].
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
 		arguments:

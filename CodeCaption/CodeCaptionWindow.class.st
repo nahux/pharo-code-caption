@@ -12,6 +12,7 @@ Class {
 		'whiteSpace',
 		'textArea',
 		'btnAdd',
+		'btnResolve',
 		'editMode'
 	],
 	#category : #'CodeCaption-UI'
@@ -19,12 +20,16 @@ Class {
 
 { #category : #specs }
 CodeCaptionWindow class >> defaultSpec [
-	^ SpBoxLayout newVertical 
+	^ SpBoxLayout newVertical
 		add: #sourceCode;
 		add: #whiteSpace height: 20;
 		add: #textArea height: 50;
-		add: #btnAdd height: 40;
-	yourself
+		add:
+			(SpBoxLayout newHorizontal
+				add: #btnAdd;
+				add: #btnResolve;
+				yourself) height: 30;
+		yourself.
 ]
 
 { #category : #adding }
@@ -48,8 +53,8 @@ CodeCaptionWindow >> btnAdd [
 ]
 
 { #category : #accessing }
-CodeCaptionWindow >> btnAdd: anObject [
-	btnAdd := anObject
+CodeCaptionWindow >> btnResolve [
+	^ btnResolve
 ]
 
 { #category : #accessing }
@@ -75,9 +80,20 @@ CodeCaptionWindow >> codeCaptionProject: anObject [
 { #category : #initialization }
 CodeCaptionWindow >> connectPresenters [
 	"Add the CodeCaption to the project and open the project window"
+
 	btnAdd
-		action:
-			[ self addCodeCaptionToProject. self openCodeCaptionListWindow. self window close]
+		action: [ 
+			self addCodeCaptionToProject.
+			self openCodeCaptionListWindow.
+			self window close ].
+	btnResolve
+		ifNotNil: [ 
+			btnResolve
+				action: [ 
+					self codeCaption resolve.
+					self addCodeCaptionToProject.
+					self openCodeCaptionListWindow.
+					self window close ] ]
 ]
 
 { #category : #accessing }
@@ -100,19 +116,29 @@ CodeCaptionWindow >> initializePresenters [
 	textArea := self newText.
 	codeCaption comment ifNotNil: [ textArea text: codeCaption comment ].
 	btnAdd := self newButton.
+	btnResolve:= self newButton.
+	btnResolve label: 'Resolve'.
 
 	"Setting up Widgets"
 	sourceCode text: codeCaption captionNode node newSource; enabled: false; withScrollBars.
 	textArea autoAccept: true; withScrollBars.
-	editMode ifTrue:[btnAdd label: 'Apply'] ifFalse:[ btnAdd label: 'Add'].
-	
+	editMode 
+		ifTrue:[
+			btnAdd label: 'Apply'. 
+			codeCaption resolved ifTrue: [ btnResolve disable ].
+		] 
+		ifFalse:[ 
+			btnAdd label: 'Add'. 
+			btnResolve disable
+		].
 	
 	"Layout order"
 	self focusOrder
 		add: sourceCode;
 		add: whiteSpace;
 		add: textArea;
-		add: btnAdd.
+		add: btnAdd;
+		add: btnResolve.
 ]
 
 { #category : #initialization }

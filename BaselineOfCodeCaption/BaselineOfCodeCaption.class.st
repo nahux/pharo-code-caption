@@ -4,7 +4,7 @@ Baseline of CodeCaption
 Class {
 	#name : #BaselineOfCodeCaption,
 	#superclass : #BaselineOf,
-	#category : #BaselineOfCodeCaption
+	#category : #'BaselineOfCodeCaption-baseline'
 }
 
 { #category : #baselines }

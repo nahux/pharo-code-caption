@@ -79,8 +79,9 @@ CodeCaptionComment >> id: anObject [
 ]
 
 { #category : #initialization }
-CodeCaptionComment >> initialize [ 
-	id:= self identityHash .
+CodeCaptionComment >> initialize [
+	id := self identityHash.
+	resolved ifNil: [ resolved := false ].
 	captionNode ifNil: [ captionNode := CodeCaptionNode new ]
 ]
 
