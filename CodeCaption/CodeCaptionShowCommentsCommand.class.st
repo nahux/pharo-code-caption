@@ -58,8 +58,11 @@ CodeCaptionShowCommentsCommand >> prepareFullExecutionInContext: aToolContext [
 
 	"Get repository from context"
 	repository := IceRepository registry
-		detect: [ :each | each includesPackageNamed: package name ].
-	codeCaptionProject := CodeCaptionProject
-		loadProject: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
-		package: package
+		detect: [ :each | each includesPackageNamed: package name ]
+		ifNone: [ codeCaptionProject := nil ].
+	repository isNotNil
+		ifTrue: [ repository repositoryDirectory isNotNil
+				ifTrue: [ codeCaptionProject := CodeCaptionProject
+						loadProject: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
+						package: package ] ]
 ]
