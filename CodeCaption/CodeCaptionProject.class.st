@@ -129,6 +129,11 @@ CodeCaptionProject >> packages: aCollection [
 	packages := aCollection
 ]
 
+{ #category : #actions }
+CodeCaptionProject >> resolveCodeCaption: aCodeCaptionComment [
+	codeCaptions remove: aCodeCaptionComment. 
+]
+
 { #category : #'file in/out' }
 CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath [
 	| ston workingDir fstream |

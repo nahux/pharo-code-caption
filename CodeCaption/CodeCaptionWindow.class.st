@@ -34,17 +34,12 @@ CodeCaptionWindow class >> defaultSpec [
 
 { #category : #adding }
 CodeCaptionWindow >> addCodeCaptionToProject [
-	| repository |
 	codeCaption
 		comment: self textArea text;
 		author: Author uniqueInstance fullName.
 	codeCaptionProject
 		addCodeCaption: codeCaption;
 		addPackage: codeCaption package.
-	repository := IceRepository registry
-		detect: [ :each | each includesPackageNamed: codeCaption package name ].
-	codeCaptionProject
-		saveCodeCaptionProjectTo: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
 ]
 
 { #category : #accessing }
@@ -84,14 +79,15 @@ CodeCaptionWindow >> connectPresenters [
 	btnAdd
 		action: [ 
 			self addCodeCaptionToProject.
+			self saveCodeCaptionProject.
 			self openCodeCaptionListWindow.
 			self window close ].
 	btnResolve
 		ifNotNil: [ 
 			btnResolve
 				action: [ 
-					self codeCaption resolve.
-					self addCodeCaptionToProject.
+					self codeCaptionProject resolveCodeCaption: self codeCaption.
+					self saveCodeCaptionProject.
 					self openCodeCaptionListWindow.
 					self window close ] ]
 ]
@@ -159,6 +155,15 @@ CodeCaptionWindow >> label: anObject [
 { #category : #adding }
 CodeCaptionWindow >> openCodeCaptionListWindow [
 	(CodeCaptionListWindow on: (codeCaptionProject)) openWithSpec.
+]
+
+{ #category : #saving }
+CodeCaptionWindow >> saveCodeCaptionProject [
+	| repository |
+	repository := IceRepository registry
+		detect: [ :each | each includesPackageNamed: codeCaption package name ].
+	codeCaptionProject
+		saveCodeCaptionProjectTo: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
 ]
 
 { #category : #accessing }
