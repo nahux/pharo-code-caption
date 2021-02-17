@@ -153,6 +153,6 @@ CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath [
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
 		arguments:
-			#('-C' 'pharo-local/iceberg/nahux/pharo-code-caption/' 'commit' '-m' '[CodeCaption] Added new CodeCaption');
+			#('-C' 'pharo-local/iceberg/nahux/pharo-code-caption/' 'commit' '-m' '[CodeCaption] Modified CodeCaptions from project');
 		run
 ]
