@@ -84,21 +84,21 @@ CodeCaptionProject >> loadNodesForPackage: aPackage [
 	codeCaptions
 		do: [ :c | 
 			c package: aPackage.
-			c captionNode node: (Object readFrom: c captionNode node).
-			c captionNode
-				methodNode: (Object readFrom: c captionNode methodNode).
+			c captionSource node: (Object readFrom: c captionSource node).
+			c captionSource
+				methodNode: (Object readFrom: c captionSource methodNode).
 			foundMethod := nil.
 			allMethods
 				do: [ :pm | 
 					"Check if method and class pairing from CodeCaption File exists in the source code"
-					(pm methodNode selector = c captionNode methodNode selector
-						and: pm methodNode methodClass = c captionNode nodeClass)
+					(pm methodNode selector = c captionSource methodNode selector
+						and: pm methodNode methodClass = c captionSource nodeClass)
 						ifTrue: [ foundMethod := pm methodNode ] ].
 			foundMethod
-				ifNotNil: [ c captionNode methodNode: foundMethod.
+				ifNotNil: [ c captionSource methodNode: foundMethod.
 					"Search the CodeCaptionComment node in the methodNode to see if it was modified"
 					c
-						nodeFound: (self method: foundMethod hasNode: c captionNode node) ] ]
+						nodeFound: (self method: foundMethod hasNode: c captionSource node) ] ]
 ]
 
 { #category : #helper }

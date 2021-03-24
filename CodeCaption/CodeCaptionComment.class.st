@@ -22,7 +22,7 @@ Class {
 CodeCaptionComment class >> newWithNode:aProgramNode package: anASTPackage methodNode:aMethodNode repository: anIceLibgitRepository [
 	^ self new
 		package: anASTPackage;
-		captionNode: ((CodeCaptionNode new) node: aProgramNode; methodNode: aMethodNode; nodeClass: aMethodNode methodClass);
+		captionSource: ((CodeCaptionSource new) node: aProgramNode; methodNode: aMethodNode; nodeClass: aMethodNode methodClass);
 		repository: anIceLibgitRepository ;
 		yourself.
 ]
@@ -44,13 +44,13 @@ CodeCaptionComment >> author: anObject [
 ]
 
 { #category : #accessing }
-CodeCaptionComment >> captionNode [
+CodeCaptionComment >> captionSource [
 	^ captionNode
 ]
 
 { #category : #accessing }
-CodeCaptionComment >> captionNode: anObject [
-	captionNode := anObject
+CodeCaptionComment >> captionSource: aCodeCaptionSource [
+	captionNode := aCodeCaptionSource
 ]
 
 { #category : #accessing }
@@ -82,17 +82,17 @@ CodeCaptionComment >> id: anObject [
 CodeCaptionComment >> initialize [
 	id := self identityHash.
 	resolved ifNil: [ resolved := false ].
-	captionNode ifNil: [ captionNode := CodeCaptionNode new ]
+	captionNode ifNil: [ captionNode := CodeCaptionSource new ]
 ]
 
 { #category : #accessing }
 CodeCaptionComment >> methodClass [ 
-	^ self captionNode methodNode methodClass
+	^ self captionSource methodNode methodClass
 ]
 
 { #category : #accessing }
 CodeCaptionComment >> methodName [ 
-	^ self captionNode methodNode selector
+	^ self captionSource methodNode selector
 ]
 
 { #category : #accessing }
