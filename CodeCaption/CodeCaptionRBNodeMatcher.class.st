@@ -3,7 +3,7 @@ I'm an AST visitor for CodeCaption.
 I'm used to search for nodes with CodeCaptions in the source code AST.
 "
 Class {
-	#name : #RBCodeCaptionVisitor,
+	#name : #CodeCaptionRBNodeMatcher,
 	#superclass : #RBProgramNodeVisitor,
 	#instVars : [
 		'node',
@@ -13,87 +13,87 @@ Class {
 }
 
 { #category : #'instance creation' }
-RBCodeCaptionVisitor class >> newWithNode: anRBProgramNode [
+CodeCaptionRBNodeMatcher class >> newWithNode: anRBProgramNode [
 	^ self new
 		node: anRBProgramNode ;
 		yourself.
 ]
 
 { #category : #accessing }
-RBCodeCaptionVisitor >> astNode [
+CodeCaptionRBNodeMatcher >> astNode [
 	^ astNode
 ]
 
 { #category : #accessing }
-RBCodeCaptionVisitor >> astNode: anRBProgramNode [
+CodeCaptionRBNodeMatcher >> astNode: anRBProgramNode [
 	astNode := anRBProgramNode
 ]
 
 { #category : #helper }
-RBCodeCaptionVisitor >> compareNodeTo: anotherRBProgramNode [
+CodeCaptionRBNodeMatcher >> compareNodeTo: anotherRBProgramNode [
 	^ self node newSource = (anotherRBProgramNode source copyFrom: anotherRBProgramNode start to: anotherRBProgramNode stop)
 ]
 
 { #category : #accessing }
-RBCodeCaptionVisitor >> node [
+CodeCaptionRBNodeMatcher >> node [
 	^ node
 ]
 
 { #category : #accessing }
-RBCodeCaptionVisitor >> node: aParsedProgramNode [
+CodeCaptionRBNodeMatcher >> node: aParsedProgramNode [
 	node := aParsedProgramNode
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitArrayNode: anArrayNode [
+CodeCaptionRBNodeMatcher >> visitArrayNode: anArrayNode [
 	(self compareNodeTo: anArrayNode)
 		ifTrue: [ astNode := anArrayNode ]
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitAssignmentNode: anAssignmentNode [
+CodeCaptionRBNodeMatcher >> visitAssignmentNode: anAssignmentNode [
 	(self compareNodeTo: anAssignmentNode)
 		ifTrue: [ astNode := anAssignmentNode ]
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitBlockNode: aBlockNode [
+CodeCaptionRBNodeMatcher >> visitBlockNode: aBlockNode [
 	(self compareNodeTo: aBlockNode)
 		ifTrue: [ astNode := aBlockNode ]
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitCascadeNode: aCascadeNode [
+CodeCaptionRBNodeMatcher >> visitCascadeNode: aCascadeNode [
 	(self compareNodeTo: aCascadeNode)
 		ifTrue: [ astNode := aCascadeNode ]
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitLiteralArrayNode: aLiteralArrayNode [
+CodeCaptionRBNodeMatcher >> visitLiteralArrayNode: aLiteralArrayNode [
 	(self compareNodeTo: aLiteralArrayNode)
 		ifTrue: [ astNode := aLiteralArrayNode ]
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitLiteralNode: aLiteralNode [
+CodeCaptionRBNodeMatcher >> visitLiteralNode: aLiteralNode [
 	(self compareNodeTo: aLiteralNode)
 		ifTrue: [ astNode := aLiteralNode ]
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitLiteralValueNode: aLiteralValueNode [
+CodeCaptionRBNodeMatcher >> visitLiteralValueNode: aLiteralValueNode [
 	(self compareNodeTo: aLiteralValueNode)
 		ifTrue: [ astNode := aLiteralValueNode ]
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitMessageNode: aMessageNode [
+CodeCaptionRBNodeMatcher >> visitMessageNode: aMessageNode [
 	(self compareNodeTo: aMessageNode)
 		ifTrue: [ astNode := aMessageNode ]
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitMethodNode: aMethodNode [
+CodeCaptionRBNodeMatcher >> visitMethodNode: aMethodNode [
 	(self compareNodeTo: aMethodNode)
 		ifTrue: [ astNode := aMethodNode ]
 		ifFalse: [ 
@@ -103,20 +103,20 @@ RBCodeCaptionVisitor >> visitMethodNode: aMethodNode [
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitParseErrorNode: aParseErrorNode [
+CodeCaptionRBNodeMatcher >> visitParseErrorNode: aParseErrorNode [
 	(self compareNodeTo: aParseErrorNode)
 		ifTrue: [ astNode := aParseErrorNode ]
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitReturnNode: aReturnNode [
+CodeCaptionRBNodeMatcher >> visitReturnNode: aReturnNode [
 	(self compareNodeTo: aReturnNode)
 		ifTrue: [ astNode := aReturnNode ]
 		ifFalse: [ (aReturnNode value) ifNotNil: [ aReturnNode value acceptVisitor: self ] ]
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitSequenceNode: aSequenceNode [
+CodeCaptionRBNodeMatcher >> visitSequenceNode: aSequenceNode [
 	(self compareNodeTo: aSequenceNode)
 		ifTrue: [ astNode := aSequenceNode ]
 		ifFalse: [ 
@@ -127,7 +127,7 @@ RBCodeCaptionVisitor >> visitSequenceNode: aSequenceNode [
 ]
 
 { #category : #visiting }
-RBCodeCaptionVisitor >> visitVariableNode: aVariableNode [
+CodeCaptionRBNodeMatcher >> visitVariableNode: aVariableNode [
 	(self compareNodeTo: aVariableNode)
 		ifTrue: [ astNode := aVariableNode ]
 ]

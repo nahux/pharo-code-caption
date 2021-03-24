@@ -104,7 +104,7 @@ CodeCaptionProject >> loadNodesForPackage: aPackage [
 { #category : #helper }
 CodeCaptionProject >> method: aMethodNode hasNode: anRBProgramNode [
 	| visitor |
-	visitor := RBCodeCaptionVisitor newWithNode: anRBProgramNode.
+	visitor := CodeCaptionRBNodeMatcher newWithNode: anRBProgramNode.
 	aMethodNode acceptVisitor: visitor.
 	visitor astNode ifNotNil: [ ^ true ] ifNil: [ ^ false ]
 ]
