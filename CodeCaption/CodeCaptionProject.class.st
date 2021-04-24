@@ -148,7 +148,7 @@ CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath [
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
 		arguments:
-			#('-C' 'pharo-local/iceberg/nahux/pharo-code-caption/' 'add' 'CodeCaptions/*.STON');
+			#('-C' 'pharo-local/iceberg/nahux/pharo-code-caption/' 'add' 'CodeCaptions/');
 		runAndWait.
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
