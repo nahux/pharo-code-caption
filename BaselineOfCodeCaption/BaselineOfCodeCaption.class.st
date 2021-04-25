@@ -14,5 +14,7 @@ BaselineOfCodeCaption >> baseline: spec [
 		for: #common
 		do: [ spec
 				baseline: 'OSSubprocess'
-				with: [ spec repository: 'github://pharo-contributions/OSSubprocess' ] ]
+				with:
+					[ spec repository: 'github://pharo-contributions/OSSubprocess' ].
+			spec package: 'CodeCaption' ]
 ]
