@@ -135,24 +135,35 @@ CodeCaptionProject >> resolveCodeCaption: aCodeCaptionComment [
 ]
 
 { #category : #'file in/out' }
-CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath [
-	| ston workingDir fstream |
+CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath withText: aCommentText andAuthor: anAuthorName [
+	| ston workingDir fstream fullRepositoryPath commitText |
 	ston := STON toStringPretty: self.
 	workingDir := FileSystem disk workingDirectory.
 	(workingDir / aFilePath) ensureCreateFile.
 	fstream := (workingDir / aFilePath) writeStream.
 	fstream nextPutAll: ston.
 	fstream close.
-	"Commit changes (not on windows) TODO: fix this to use filePath and add CodeCaption info to commit message"
+	"Commit changes (not on windows)"
+	fullRepositoryPath := (workingDir / aFilePath) asPath parent parent pathString.
+	commitText:= '[CodeCaption] Added new CodeCaption: "', aCommentText , '" by: "', anAuthorName , '"'.
 	Smalltalk os isWindows ifTrue: [ ^ self ].
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
 		arguments:
-			#('-C' 'pharo-local/iceberg/nahux/pharo-code-caption/' 'add' 'CodeCaptions/');
+			(Array
+				with: '-C'
+				with: fullRepositoryPath
+				with: 'add'
+				with: 'CodeCaptions/');
 		runAndWait.
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
 		arguments:
-			#('-C' 'pharo-local/iceberg/nahux/pharo-code-caption/' 'commit' '-m' '[CodeCaption] Modified CodeCaptions from project');
+			(Array
+				with: '-C'
+				with: fullRepositoryPath
+				with: 'commit'
+				with: '-m'
+				with: commitText);
 		run
 ]

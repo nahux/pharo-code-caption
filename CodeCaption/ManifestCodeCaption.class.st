@@ -24,7 +24,7 @@ ManifestCodeCaption class >> ruleRBClassNotReferencedRuleV1FalsePositive [
 
 { #category : #'code-critics' }
 ManifestCodeCaption class >> ruleRBGlobalVariablesUsageV1FalsePositive [
-	^ #(#(#(#RGMethodDefinition #(#'ClyCodeCaptionCommand class' #canBeExecutedInContext: #true)) #'2020-05-16T16:16:53.92994-03:00') )
+	^ #(#(#(#RGMethodDefinition #(#'ClyCodeCaptionCommand class' #canBeExecutedInContext: #true)) #'2020-05-16T16:16:53.92994-03:00') #(#(#RGClassDefinition #(#CodeCaptionProject)) #'2021-04-25T13:30:22.087627-03:00') )
 ]
 
 { #category : #'code-critics' }

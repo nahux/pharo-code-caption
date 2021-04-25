@@ -163,7 +163,7 @@ CodeCaptionWindow >> saveCodeCaptionProject [
 	repository := IceRepository registry
 		detect: [ :each | each includesPackageNamed: codeCaption package name ].
 	codeCaptionProject
-		saveCodeCaptionProjectTo: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
+		saveCodeCaptionProjectTo: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository) withText: (codeCaption comment) andAuthor: (codeCaption author)
 ]
 
 { #category : #accessing }
