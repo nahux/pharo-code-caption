@@ -104,6 +104,8 @@ CodeCaptionProject >> loadNodesForPackage: aPackage [
 { #category : #helper }
 CodeCaptionProject >> method: aMethodNode hasNode: anRBProgramNode [
 	| visitor |
+	"Check if both are the same node (same method node)"
+	(aMethodNode body = anRBProgramNode body) ifTrue: [ ^ true ].
 	visitor := CodeCaptionRBNodeMatcher newWithNode: anRBProgramNode.
 	aMethodNode acceptVisitor: visitor.
 	visitor astNode ifNotNil: [ ^ true ] ifNil: [ ^ false ]
