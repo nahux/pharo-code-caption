@@ -7,7 +7,6 @@ Class {
 	#instVars : [
 		'ccList',
 		'btnSync',
-		'btnResolve',
 		'codeCaptionProject'
 	],
 	#category : #'CodeCaption-UI'
@@ -19,7 +18,6 @@ CodeCaptionListWindow class >> defaultSpec [
 		add: #ccList;
 		add: (SpBoxLayout newHorizontal
 				add: #btnSync;
-				add: #btnResolve;
 				yourself) height: 30;
 		yourself
 ]
@@ -37,14 +35,6 @@ CodeCaptionListWindow >> connectPresenters [
 		action: [ 
 			self syncCodeCaptionProject.
 		].
-	btnResolve
-		ifNotNil: [ 
-			btnResolve
-				action: [ 
-					"self codeCaptionProject resolveCodeCaption: self codeCaption.
-					self saveCodeCaptionProject.
-					self openCodeCaptionListWindow.
-					self window close" ] ]
 ]
 
 { #category : #initialization }
@@ -52,7 +42,6 @@ CodeCaptionListWindow >> initializePresenters [
 	"Initialize the window layout"
 
 	ccList := self newTable
-		"TODO: add class"
 		addColumn: (SpStringTableColumn title: 'Reference' evaluated: #nodeFound);
 		addColumn: (SpStringTableColumn title: 'Method' evaluated: #methodName);
 		addColumn: (SpStringTableColumn title: 'Comment' evaluated: #comment);
@@ -61,13 +50,11 @@ CodeCaptionListWindow >> initializePresenters [
 		activateOnDoubleClick;
 		whenActivatedDo:
 				[ :selection | (CodeCaptionWindow on: selection selectedItem) openWithSpec ].
-	
+	"TODO: add class"
+
 	"Actions"
 	btnSync := self newButton.
 	btnSync label: 'Sync with remote'.
-	btnResolve:= self newButton.
-	btnResolve label: 'Resolve'.
-	
 	self updatePresenter
 ]
 
@@ -90,11 +77,15 @@ CodeCaptionListWindow >> setModelBeforeInitialization: aCodeCaptionProject [
 
 { #category : #actions }
 CodeCaptionListWindow >> syncCodeCaptionProject [
-	| packages |
-	packages:= codeCaptionProject packages. 
-"codeCaptionProject := CodeCaptionProject
-						loadProject: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
-						package: package ]"
+	| package repository |
+	"TODO: improve this package detection. CodeCaptionProject needs IcePackes, not RPackages so this mess is needed"
+	package := codeCaptionProject packages detect: [ :p | p isNotNil ].
+	repository := CodeCaptionProject
+		getRepositoryForPackageName: package name.
+	codeCaptionProject := CodeCaptionProject
+		syncAndLoadProjectDir: codeCaptionProject gitDirectory
+		packages: repository workingCopy packages.
+	codeCaptionProject pushCodeCaptionsToRemote
 ]
 
 { #category : #initialization }

@@ -79,7 +79,7 @@ CodeCaptionWindow >> connectPresenters [
 	btnAdd
 		action: [ 
 			self addCodeCaptionToProject.
-			self saveCodeCaptionProject.
+			self saveCodeCaptionToProject: false.
 			self openCodeCaptionListWindow.
 			self window close ].
 	btnResolve
@@ -87,7 +87,7 @@ CodeCaptionWindow >> connectPresenters [
 			btnResolve
 				action: [ 
 					self codeCaptionProject resolveCodeCaption: self codeCaption.
-					self saveCodeCaptionProject.
+					self saveCodeCaptionToProject: true.
 					self openCodeCaptionListWindow.
 					self window close ] ]
 ]
@@ -158,12 +158,18 @@ CodeCaptionWindow >> openCodeCaptionListWindow [
 ]
 
 { #category : #saving }
-CodeCaptionWindow >> saveCodeCaptionProject [
-	| repository |
+CodeCaptionWindow >> saveCodeCaptionToProject: isResolve [
+	| repository commitText |
+	commitText := isResolve
+		ifTrue: [ 'Resolved CodeCaption: ' ]
+		ifFalse: [ 'Added new CodeCaption: ' ].
+	commitText := commitText , '"' , codeCaption comment , '"'.
 	repository := IceRepository registry
 		detect: [ :each | each includesPackageNamed: codeCaption package name ].
 	codeCaptionProject
-		saveCodeCaptionProjectTo: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository) withText: (codeCaption comment) andAuthor: (codeCaption author)
+		saveCodeCaptionProjectTo: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
+		withText: commitText
+		andAuthor: codeCaption author
 ]
 
 { #category : #accessing }

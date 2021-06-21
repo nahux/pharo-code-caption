@@ -22,6 +22,11 @@ CodeCaptionProject class >> codeCaptionsDirectoryForRepository: anIceLibgitRepos
 ]
 
 { #category : #'instance creation' }
+CodeCaptionProject class >> getRepositoryForPackageName: aPackageName [
+	^ (IceRepository registry) detect: [ :each | each includesPackageNamed: aPackageName ] ifNone: [ ^ nil ].
+]
+
+{ #category : #'instance creation' }
 CodeCaptionProject class >> loadProject: aFilePath packages: icePackages [
 	| working_dir fstream project |
 	working_dir := FileSystem disk workingDirectory.
@@ -34,6 +39,29 @@ CodeCaptionProject class >> loadProject: aFilePath packages: icePackages [
 			^ project 
 		]
 		ifFalse: [ ^ nil ]
+]
+
+{ #category : #'instance creation' }
+CodeCaptionProject class >> syncAndLoadProjectDir: repositoryPath packages: icePackages [
+	| repository fullRepositoryPath loadedProject |
+	loadedProject := nil.
+	repository := self getRepositoryForPackageName: (icePackages detect: [ :p | p isNotNil ]) packageName.
+	fullRepositoryPath := FileSystem disk workingDirectory asPath pathString , '/', repositoryPath.
+	"Pull"
+	OSSUnixSubprocess new
+		command: '/usr/bin/git';
+		arguments:
+			(Array
+				with: 'pull');
+		workingDirectory: fullRepositoryPath ;
+		redirectStdout;
+		redirectStderr;
+	runAndWaitOnExitDo: [ :command :outString : errString |
+		"Call to load Project"
+		loadedProject := self loadProject: (self codeCaptionsDirectoryForRepository: repository) packages: icePackages.
+		self inform: 'CodeCaptions for "', name , '" were updated from remote. ', outString, errString.
+		^ loadedProject.
+	].
 ]
 
 { #category : #adding }
@@ -138,6 +166,24 @@ CodeCaptionProject >> packages: aCollection [
 	packages := aCollection
 ]
 
+{ #category : #synchronization }
+CodeCaptionProject >> pushCodeCaptionsToRemote [
+ 	| fullRepositoryPath |
+	fullRepositoryPath := FileSystem disk workingDirectory asPath pathString , '/',  gitDirectory .
+	"Push"
+	OSSUnixSubprocess new
+		command: '/usr/bin/git';
+		arguments:
+			(Array
+				with: 'push');
+		workingDirectory: fullRepositoryPath ;
+		redirectStdout;
+		redirectStderr;
+	runAndWaitOnExitDo: [ :command :outString : errString |
+		self inform: 'CodeCaptions for "', name , '" updated to remote. ', outString, errString.
+	].
+]
+
 { #category : #actions }
 CodeCaptionProject >> resolveCodeCaption: aCodeCaptionComment [
 	codeCaptions remove: aCodeCaptionComment. 
@@ -154,7 +200,7 @@ CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath withText: aCommentText
 	fstream close.
 	"Commit changes (not on windows)"
 	fullRepositoryPath := (workingDir / aFilePath) asPath parent parent pathString.
-	commitText:= '[CodeCaption] Added new CodeCaption: "', aCommentText , '" by: "', anAuthorName , '"'.
+	commitText:= '[CodeCaption] "', aCommentText , '" by: "', anAuthorName , '"'.
 	Smalltalk os isWindows ifTrue: [ ^ self ].
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
@@ -174,5 +220,5 @@ CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath withText: aCommentText
 				with: 'commit'
 				with: '-m'
 				with: commitText);
-		run
+		run.
 ]

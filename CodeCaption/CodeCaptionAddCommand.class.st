@@ -70,8 +70,7 @@ CodeCaptionAddCommand >> prepareFullExecutionInContext: aToolContext [
 	"Set Iceberg repository"
 	method := aToolContext lastSelectedMethod.
 	packageName := method package name.
-	repository := IceRepository registry
-		detect: [ :each | each includesPackageNamed: packageName ].
+	repository := CodeCaptionProject getRepositoryForPackageName: packageName.
 	repository repositoryDirectory
 		ifNil: [ self inform: 'No repository was found for this package!' ]
 		ifNotNil: [ "Set AST node"
