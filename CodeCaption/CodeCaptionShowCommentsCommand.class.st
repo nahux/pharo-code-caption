@@ -64,5 +64,5 @@ CodeCaptionShowCommentsCommand >> prepareFullExecutionInContext: aToolContext [
 		ifTrue: [ repository repositoryDirectory isNotNil
 				ifTrue: [ codeCaptionProject := CodeCaptionProject
 						loadProject: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
-						package: package ] ]
+						packages: repository workingCopy packages ] ]
 ]

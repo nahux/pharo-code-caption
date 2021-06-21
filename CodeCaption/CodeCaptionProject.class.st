@@ -22,13 +22,18 @@ CodeCaptionProject class >> codeCaptionsDirectoryForRepository: anIceLibgitRepos
 ]
 
 { #category : #'instance creation' }
-CodeCaptionProject class >> loadProject: aFilePath package: aPackage [
-	| working_dir fstream |
+CodeCaptionProject class >> loadProject: aFilePath packages: icePackages [
+	| working_dir fstream project |
 	working_dir := FileSystem disk workingDirectory.
-	(working_dir/aFilePath) exists
-	ifTrue: [ fstream := (working_dir/aFilePath) readStream. ^(STON fromString: (fstream contents)) loadNodesForPackage: aPackage.]
-	ifFalse: [ ^nil ].
-	
+	(working_dir / aFilePath) exists
+		ifTrue: [ 
+			fstream := (working_dir / aFilePath) readStream.
+			project := STON fromString: fstream contents.
+			"Load all CodeCaptions for all project packages"
+			icePackages do: [ :p | project loadNodesForPackage: (RPackage named: p packageName) ].
+			^ project 
+		]
+		ifFalse: [ ^ nil ]
 ]
 
 { #category : #adding }
@@ -38,8 +43,10 @@ CodeCaptionProject >> addCodeCaption: aComment [
 ]
 
 { #category : #accessing }
-CodeCaptionProject >> addPackage: aPackage [ 
-	packages add: aPackage
+CodeCaptionProject >> addPackage: aPackage [
+	packages
+		detect: [ :p | p name = aPackage name ]
+		ifNone: [ packages add: aPackage ]
 ]
 
 { #category : #accessing }

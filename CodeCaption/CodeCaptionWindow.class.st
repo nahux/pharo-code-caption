@@ -188,10 +188,9 @@ CodeCaptionWindow >> setModelBeforeInitialization: aCodeCaptionComment [
 	repository := IceRepository registry
 		detect: [ :each | each includesPackageNamed: package name ].
 
-	"TODO: Fix this so many packages are available"
 	codeCaptionProject := CodeCaptionProject
 		loadProject: (CodeCaptionProject codeCaptionsDirectoryForRepository: repository)
-		package: package.
+		packages: (repository workingCopy packages).
 	codeCaptionProject
 		ifNil: [ codeCaptionProject := CodeCaptionProject new.
 			codeCaptionProject
