@@ -12,7 +12,6 @@ Class {
 		'captionNode',
 		'nodeFound',
 		'comment',
-		'resolved',
 		'author'
 	],
 	#category : #'CodeCaption-Caption'
@@ -81,7 +80,6 @@ CodeCaptionComment >> id: anObject [
 { #category : #initialization }
 CodeCaptionComment >> initialize [
 	id := self identityHash.
-	resolved ifNil: [ resolved := false ].
 	captionNode ifNil: [ captionNode := CodeCaptionSource new ]
 ]
 
@@ -123,19 +121,4 @@ CodeCaptionComment >> repository [
 { #category : #accessing }
 CodeCaptionComment >> repository: anObject [
 	repository := anObject
-]
-
-{ #category : #actions }
-CodeCaptionComment >> resolve [
-	self resolved: true.
-]
-
-{ #category : #accessing }
-CodeCaptionComment >> resolved [
-	^ resolved
-]
-
-{ #category : #accessing }
-CodeCaptionComment >> resolved: anObject [
-	resolved := anObject
 ]

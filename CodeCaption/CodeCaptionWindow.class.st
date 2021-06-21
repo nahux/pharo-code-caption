@@ -120,8 +120,7 @@ CodeCaptionWindow >> initializePresenters [
 	textArea autoAccept: true; withScrollBars.
 	editMode 
 		ifTrue:[
-			btnAdd label: 'Apply'. 
-			codeCaption resolved ifTrue: [ btnResolve disable ].
+			btnAdd label: 'Apply'.
 		] 
 		ifFalse:[ 
 			btnAdd label: 'Add'. 

@@ -45,7 +45,6 @@ CodeCaptionListWindow >> initializePresenters [
 		addColumn: (SpStringTableColumn title: 'Reference' evaluated: #nodeFound);
 		addColumn: (SpStringTableColumn title: 'Method' evaluated: #methodName);
 		addColumn: (SpStringTableColumn title: 'Comment' evaluated: #comment);
-		addColumn: (SpStringTableColumn title: 'Resolved' evaluated: #resolved);
 		addColumn: (SpStringTableColumn title: 'Author' evaluated: #author);
 		activateOnDoubleClick;
 		whenActivatedDo:
