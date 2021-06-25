@@ -161,7 +161,7 @@ CodeCaptionWindow >> saveCodeCaptionToProject: isResolve [
 	| repository commitText |
 	commitText := isResolve
 		ifTrue: [ 'Resolved CodeCaption: ' ]
-		ifFalse: [ 'Added new CodeCaption: ' ].
+		ifFalse: [ 'Saved CodeCaption: ' ].
 	commitText := commitText , '"' , codeCaption comment , '"'.
 	repository := IceRepository registry
 		detect: [ :each | each includesPackageNamed: codeCaption package name ].

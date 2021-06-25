@@ -48,6 +48,7 @@ CodeCaptionProject class >> syncAndLoadProjectDir: repositoryPath packages: iceP
 	repository := self getRepositoryForPackageName: (icePackages detect: [ :p | p isNotNil ]) packageName.
 	fullRepositoryPath := FileSystem disk workingDirectory asPath pathString , '/', repositoryPath.
 	"Pull"
+	Smalltalk os isWindows ifTrue: [ ^ self ].
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
 		arguments:
@@ -170,6 +171,7 @@ CodeCaptionProject >> packages: aCollection [
 CodeCaptionProject >> pushCodeCaptionsToRemote [
  	| fullRepositoryPath |
 	fullRepositoryPath := FileSystem disk workingDirectory asPath pathString , '/',  gitDirectory .
+	Smalltalk os isWindows ifTrue: [ ^ self ].
 	"Push"
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';

@@ -78,6 +78,7 @@ CodeCaptionListWindow >> setModelBeforeInitialization: aCodeCaptionProject [
 CodeCaptionListWindow >> syncCodeCaptionProject [
 	| package repository |
 	"TODO: improve this package detection. CodeCaptionProject needs IcePackes, not RPackages so this mess is needed"
+	Smalltalk os isWindows ifTrue: [ self inform: 'Remote Sync Not available in Windows'. ^ self ].
 	package := codeCaptionProject packages detect: [ :p | p isNotNil ].
 	repository := CodeCaptionProject
 		getRepositoryForPackageName: package name.
