@@ -120,9 +120,11 @@ CodeCaptionProject >> loadNodesForPackage: aPackage [
 	codeCaptions
 		do: [ :c | 
 			c package: aPackage.
-			c captionSource node: (Object readFrom: c captionSource node).
-			c captionSource
-				methodNode: (Object readFrom: c captionSource methodNode).
+			c captionSource node isString
+				ifTrue: [ c captionSource node: (Object readFrom: c captionSource node) ].
+			c captionSource methodNode isString
+				ifTrue: [ c captionSource
+						methodNode: (Object readFrom: c captionSource methodNode) ].
 			foundMethod := nil.
 			allMethods
 				do: [ :pm | 
