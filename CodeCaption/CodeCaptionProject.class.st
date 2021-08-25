@@ -41,30 +41,6 @@ CodeCaptionProject class >> loadProject: aFilePath packages: icePackages [
 		ifFalse: [ ^ nil ]
 ]
 
-{ #category : #'instance creation' }
-CodeCaptionProject class >> syncAndLoadProjectDir: repositoryPath packages: icePackages [
-	| repository fullRepositoryPath loadedProject |
-	loadedProject := nil.
-	repository := self getRepositoryForPackageName: (icePackages detect: [ :p | p isNotNil ]) packageName.
-	fullRepositoryPath := FileSystem disk workingDirectory asPath pathString , '/', repositoryPath.
-	"Pull"
-	Smalltalk os isWindows ifTrue: [ ^ self ].
-	OSSUnixSubprocess new
-		command: '/usr/bin/git';
-		arguments:
-			(Array
-				with: 'pull');
-		workingDirectory: fullRepositoryPath ;
-		redirectStdout;
-		redirectStderr;
-	runAndWaitOnExitDo: [ :command :outString : errString |
-		"Call to load Project"
-		loadedProject := self loadProject: (self codeCaptionsDirectoryForRepository: repository) packages: icePackages.
-		self inform: 'CodeCaptions for "', name , '" were updated from remote. ', outString, errString.
-		^ loadedProject.
-	].
-]
-
 { #category : #adding }
 CodeCaptionProject >> addCodeCaption: aComment [
 	codeCaptions remove: aComment ifAbsent: [].
@@ -102,15 +78,6 @@ CodeCaptionProject >> gitDirectory: anObject [
 CodeCaptionProject >> initialize [
 	codeCaptions:= Set new.
 	packages:= Set new.
-]
-
-{ #category : #'file in/out' }
-CodeCaptionProject >> loadCaptions: aFilePath [
-	| working_dir fstream |
-	working_dir := FileSystem disk workingDirectory.
-	fstream := (working_dir / aFilePath) readStream.
-	codeCaptions := STON fromSton: fstream contents.
-	fstream close.
 ]
 
 { #category : #'file in/out' }
@@ -167,25 +134,6 @@ CodeCaptionProject >> packages [
 { #category : #accessing }
 CodeCaptionProject >> packages: aCollection [
 	packages := aCollection
-]
-
-{ #category : #synchronization }
-CodeCaptionProject >> pushCodeCaptionsToRemote [
- 	| fullRepositoryPath |
-	fullRepositoryPath := FileSystem disk workingDirectory asPath pathString , '/',  gitDirectory .
-	Smalltalk os isWindows ifTrue: [ ^ self ].
-	"Push"
-	OSSUnixSubprocess new
-		command: '/usr/bin/git';
-		arguments:
-			(Array
-				with: 'push');
-		workingDirectory: fullRepositoryPath ;
-		redirectStdout;
-		redirectStderr;
-	runAndWaitOnExitDo: [ :command :outString : errString |
-		self inform: 'CodeCaptions for "', name , '" updated to remote. ', outString, errString.
-	].
 ]
 
 { #category : #actions }

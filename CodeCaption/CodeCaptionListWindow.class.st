@@ -6,7 +6,6 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'ccList',
-		'btnSync',
 		'codeCaptionProject'
 	],
 	#category : #'CodeCaption-UI'
@@ -16,25 +15,12 @@ Class {
 CodeCaptionListWindow class >> defaultSpec [
 	^SpBoxLayout newVertical
 		add: #ccList;
-		add: (SpBoxLayout newHorizontal
-				add: #btnSync;
-				yourself) height: 30;
 		yourself
 ]
 
 { #category : #'accessing model' }
 CodeCaptionListWindow >> codeCaptionProject [
 	^ codeCaptionProject 
-]
-
-{ #category : #initialization }
-CodeCaptionListWindow >> connectPresenters [
-	"Add the CodeCaption to the project and open the project window"
-
-	btnSync
-		action: [ 
-			self syncCodeCaptionProject.
-		].
 ]
 
 { #category : #initialization }
@@ -50,11 +36,6 @@ CodeCaptionListWindow >> initializePresenters [
 		whenActivatedDo:
 				[ :selection | (CodeCaptionWindow on: selection selectedItem) openWithSpec ].
 	"TODO: add class"
-
-	"Actions"
-	btnSync := self newButton.
-	btnSync label: 'Sync with remote'.
-	self updatePresenter
 ]
 
 { #category : #initialization }
@@ -72,20 +53,6 @@ CodeCaptionListWindow >> setModelBeforeInitialization: aCodeCaptionProject [
 						ifNotNil: [ w codeCaptionProject name = aCodeCaptionProject name
 								ifTrue: [ w delete ] ] ] ].
 	codeCaptionProject := aCodeCaptionProject
-]
-
-{ #category : #actions }
-CodeCaptionListWindow >> syncCodeCaptionProject [
-	| package repository |
-	"TODO: improve this package detection. CodeCaptionProject needs IcePackes, not RPackages so this mess is needed"
-	Smalltalk os isWindows ifTrue: [ self inform: 'Remote Sync Not available in Windows'. ^ self ].
-	package := codeCaptionProject packages detect: [ :p | p isNotNil ].
-	repository := CodeCaptionProject
-		getRepositoryForPackageName: package name.
-	codeCaptionProject := CodeCaptionProject
-		syncAndLoadProjectDir: codeCaptionProject gitDirectory
-		packages: repository workingCopy packages.
-	codeCaptionProject pushCodeCaptionsToRemote
 ]
 
 { #category : #initialization }

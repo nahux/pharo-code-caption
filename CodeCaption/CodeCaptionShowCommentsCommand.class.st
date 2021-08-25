@@ -7,7 +7,6 @@ Class {
 	#instVars : [
 		'method',
 		'codeCaptionProject',
-		'packageName',
 		'package'
 	],
 	#category : #'CodeCaption-UI Context'
