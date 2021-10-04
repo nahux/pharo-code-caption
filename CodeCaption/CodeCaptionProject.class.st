@@ -152,7 +152,7 @@ CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath withText: aCommentText
 	fstream close.
 	"Commit changes (not on windows)"
 	fullRepositoryPath := (workingDir / aFilePath) asPath parent parent pathString.
-	commitText:= '[CodeCaption] "', aCommentText , '" by: "', anAuthorName , '"'.
+	commitText:= '[CodeCaption] ', aCommentText , ' by: "', anAuthorName , '"'.
 	Smalltalk os isWindows ifTrue: [ ^ self ].
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
