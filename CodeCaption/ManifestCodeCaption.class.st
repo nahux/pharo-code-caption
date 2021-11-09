@@ -8,6 +8,16 @@ Class {
 }
 
 { #category : #'code-critics' }
+ManifestCodeCaption class >> ruleCascadedNextPutAllsRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#CodeCaptionProject #saveCodeCaptionProjectTo:withText:andAuthor: #false)) #'2021-11-09T20:23:43.314152-03:00') )
+]
+
+{ #category : #'code-critics' }
+ManifestCodeCaption class >> ruleCodeCruftLeftInMethodsRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#CodeCaptionProject #saveCodeCaptionProjectTo:withText:andAuthor: #false)) #'2021-11-09T20:24:02.131652-03:00') #(#(#RGMethodDefinition #(#CodeCaptionProject #saveCodeCaptionProjectTo:withText:andAuthor: #false)) #'2021-11-09T20:24:07.105812-03:00') )
+]
+
+{ #category : #'code-critics' }
 ManifestCodeCaption class >> ruleGRIvarNeitherReadNorWrittenRuleV1FalsePositive [
 	^ #(#(#(#RGClassDefinition #(#CodeCaptionApplication)) #'2020-05-30T19:02:54.006273-03:00') )
 ]

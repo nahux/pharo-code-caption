@@ -116,7 +116,7 @@ CodeCaptionWindow >> initializePresenters [
 	btnResolve label: 'Resolve'.
 
 	"Setting up Widgets"
-	sourceCode text: codeCaption captionSource node newSource; enabled: false; withScrollBars.
+	sourceCode text: codeCaption captionSource node newSource; enabled: false; beNotEditable; withScrollBars.
 	textArea autoAccept: true; withScrollBars.
 	editMode 
 		ifTrue:[

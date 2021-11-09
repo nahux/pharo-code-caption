@@ -143,6 +143,7 @@ CodeCaptionProject >> resolveCodeCaption: aCodeCaptionComment [
 
 { #category : #'file in/out' }
 CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath withText: aCommentText andAuthor: anAuthorName [
+
 	| ston workingDir fstream fullRepositoryPath commitText |
 	ston := STON toStringPretty: self.
 	workingDir := FileSystem disk workingDirectory.
@@ -151,26 +152,36 @@ CodeCaptionProject >> saveCodeCaptionProjectTo: aFilePath withText: aCommentText
 	fstream nextPutAll: ston.
 	fstream close.
 	"Commit changes (not on windows)"
-	fullRepositoryPath := (workingDir / aFilePath) asPath parent parent pathString.
-	commitText:= '[CodeCaption] ', aCommentText , ' by: "', anAuthorName , '"'.
+	fullRepositoryPath := (workingDir / aFilePath) asPath parent parent
+		                      pathString.
+	commitText := '[CodeCaption] ' , aCommentText , ' by: "'
+	              , anAuthorName , '"'.
 	Smalltalk os isWindows ifTrue: [ ^ self ].
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
-		arguments:
-			(Array
-				with: '-C'
-				with: fullRepositoryPath
-				with: 'add'
-				with: 'CodeCaptions/');
-		runAndWait.
+		arguments: (Array
+				 with: '-C'
+				 with: fullRepositoryPath
+				 with: 'add'
+				 with: 'CodeCaptions/');
+		redirectStdout;
+		redirectStderr;
+		runAndWaitOnExitDo: [ :process :outString :errString | 
+			process isSuccess
+				ifTrue: [ self inform: 'New CodeCaption Added!' ]
+				ifFalse: [ self inform: 'CodeCaption git add failed: ' , errString ] ].
 	OSSUnixSubprocess new
 		command: '/usr/bin/git';
-		arguments:
-			(Array
-				with: '-C'
-				with: fullRepositoryPath
-				with: 'commit'
-				with: '-m'
-				with: commitText);
-		run.
+		arguments: (Array
+				 with: '-C'
+				 with: fullRepositoryPath
+				 with: 'commit'
+				 with: '-m'
+				 with: commitText);
+		redirectStdout;
+		redirectStderr;
+		runAndWaitOnExitDo: [ :process :outString :errString | 
+			process isSuccess
+				ifTrue: [ self inform: 'New CodeCaption commited!' ]
+				ifFalse: [ self error: 'CodeCaption git commit failed: ' , errString ] ]
 ]
