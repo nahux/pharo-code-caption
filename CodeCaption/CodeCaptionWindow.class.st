@@ -107,7 +107,6 @@ CodeCaptionWindow >> initializePresenters [
 	"Initialize widgets"
 	label := self newLabel.
 	sourceCode := self newCode.
-	sourceCode withoutSyntaxHighlight.
 	whiteSpace := self newNullPresenter.
 	textArea := self newText.
 	codeCaption comment ifNotNil: [ textArea text: codeCaption comment ].
