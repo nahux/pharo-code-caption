@@ -27,12 +27,21 @@ CodeCaptionListWindow >> codeCaptionProject [
 CodeCaptionListWindow >> initializePresenters [
 	"Initialize the window layout"
 
-	ccList := self newTable
-		addColumn: (SpStringTableColumn title: 'Reference' evaluated: #nodeFound);
-		addColumn: (SpStringTableColumn title: 'Method' evaluated: #methodName);
+	ccList := self newTable.
+	ccList
+		addColumn: (SpStringTableColumn title: 'Method' evaluated: #fullMethodName);
 		addColumn: (SpStringTableColumn title: 'Comment' evaluated: #comment);
 		addColumn: (SpStringTableColumn title: 'Author' evaluated: #author);
+		addColumn: (SpStringTableColumn title: 'Reference' evaluated: #nodeFound);
 		activateOnDoubleClick;
+		contextMenu:
+			(SpMenuPresenter new
+				addItem: [ :item | 
+					item
+						name: 'Inspect';
+						icon: (self iconNamed: #inspectIt); "TODO: not working"
+						action: [ ccList selectedItems inspect]
+				]);
 		whenActivatedDo:
 				[ :selection | (CodeCaptionWindow on: selection selectedItem) openWithSpec ].
 	"TODO: add class"

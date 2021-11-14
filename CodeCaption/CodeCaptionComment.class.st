@@ -62,6 +62,11 @@ CodeCaptionComment >> comment: anObject [
 	comment := anObject
 ]
 
+{ #category : #accessing }
+CodeCaptionComment >> fullMethodName [ 
+	^ self captionSource nodeClass name, '>>', self captionSource methodNode selector
+]
+
 { #category : #initialization }
 CodeCaptionComment >> hash [
 	^ self id
