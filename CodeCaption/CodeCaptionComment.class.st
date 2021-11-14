@@ -90,7 +90,7 @@ CodeCaptionComment >> initialize [
 
 { #category : #accessing }
 CodeCaptionComment >> methodClass [ 
-	^ self captionSource methodNode methodClass
+	^ self captionSource nodeClass.
 ]
 
 { #category : #accessing }

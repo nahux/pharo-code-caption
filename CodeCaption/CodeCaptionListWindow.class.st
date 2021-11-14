@@ -40,7 +40,7 @@ CodeCaptionListWindow >> initializePresenters [
 					item
 						name: 'Inspect';
 						icon: (self iconNamed: #inspectIt); "TODO: not working"
-						action: [ ccList selectedItems inspect]
+						action: [ ccList selectedItem inspect]
 				]);
 		whenActivatedDo:
 				[ :selection | (CodeCaptionWindow on: selection selectedItem) openWithSpec ].
