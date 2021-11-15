@@ -64,7 +64,7 @@ CodeCaptionComment >> comment: anObject [
 
 { #category : #accessing }
 CodeCaptionComment >> fullMethodName [ 
-	^ self captionSource nodeClass name, '>>', self captionSource methodNode selector
+	^ self captionSource nodeClass name, '>>#', self captionSource methodNode selector
 ]
 
 { #category : #initialization }

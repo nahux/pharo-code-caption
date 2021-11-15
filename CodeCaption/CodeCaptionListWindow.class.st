@@ -38,13 +38,14 @@ CodeCaptionListWindow >> initializePresenters [
 			(SpMenuPresenter new
 				addItem: [ :item | 
 					item
-						name: 'Inspect';
-						icon: (self iconNamed: #inspectIt); "TODO: not working"
-						action: [ ccList selectedItem inspect]
+						name: 'Browse';
+						icon: (self iconNamed: #browse); "TODO: not working"
+						action: [
+							((ccList selectedItem captionSource nodeClass)>>(ccList selectedItem captionSource methodNode selector asSymbol)) compiledMethod browse
+						]
 				]);
 		whenActivatedDo:
 				[ :selection | (CodeCaptionWindow on: selection selectedItem) openWithSpec ].
-	"TODO: add class"
 ]
 
 { #category : #initialization }
