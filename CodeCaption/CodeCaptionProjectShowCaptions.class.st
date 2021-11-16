@@ -2,58 +2,54 @@
 I'm a command to show all code captions in a package
 "
 Class {
-	#name : #CodeCaptionShowCommentsCommand,
-	#superclass : #SycMethodCommand,
+	#name : #CodeCaptionProjectShowCaptions,
+	#superclass : #CmdCommand,
 	#instVars : [
-		'method',
-		'codeCaptionProject',
-		'package'
+		'package',
+		'repository',
+		'codeCaptionProject'
 	],
 	#category : #'CodeCaption-UI Context'
 }
 
 { #category : #activation }
-CodeCaptionShowCommentsCommand class >> methodContextMenuActivation [
-	<classAnnotation>
-	
-	^CmdContextMenuActivation byItemOf: CmdExtraMenuGroup for: ClyMethod asCalypsoItemContext
+CodeCaptionProjectShowCaptions class >> canBeExecutedInContext: aToolContext [
+	^aToolContext isPackageSelected
 ]
 
 { #category : #activation }
-CodeCaptionShowCommentsCommand class >> methodTabIconActivation [
+CodeCaptionProjectShowCaptions class >> fullBrowserPackageMenuActivation [
 	<classAnnotation>
 	
-	^ClyBrowserTabCommandActivation for: ClyMethod asCalypsoItemContext
+	^CmdContextMenuActivation byRootGroupItemFor: ClyFullBrowserPackageContext
 ]
 
 { #category : #accessing }
-CodeCaptionShowCommentsCommand >> defaultMenuIconName [
+CodeCaptionProjectShowCaptions >> defaultMenuIconName [
 	^#recentMessages
 ]
 
 { #category : #accessing }
-CodeCaptionShowCommentsCommand >> defaultMenuItemName [
+CodeCaptionProjectShowCaptions >> defaultMenuItemName [
 	^'Show CodeCaption comments'
 ]
 
 { #category : #accessing }
-CodeCaptionShowCommentsCommand >> description [
+CodeCaptionProjectShowCaptions >> description [
 	^'Show all CodeCaption comments for the selected method'
 ]
 
 { #category : #execution }
-CodeCaptionShowCommentsCommand >> execute [
+CodeCaptionProjectShowCaptions >> execute [
 	codeCaptionProject isNotNil
 		ifFalse: [ self inform: 'No CodeCaptions found for this package.' ]
 		ifTrue: [ (CodeCaptionListWindow on: codeCaptionProject) openWithSpec ]
 ]
 
 { #category : #execution }
-CodeCaptionShowCommentsCommand >> prepareFullExecutionInContext: aToolContext [
-	| repository |
+CodeCaptionProjectShowCaptions >> prepareFullExecutionInContext: aToolContext [
 	super prepareFullExecutionInContext: aToolContext.
-	method := aToolContext lastSelectedMethod.
-	package := method package.
+	package := aToolContext lastSelectedPackage.
 
 	"Get repository from context"
 	repository := CodeCaptionProject getRepositoryForPackageName: package name.
