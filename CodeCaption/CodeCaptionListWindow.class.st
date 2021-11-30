@@ -33,6 +33,7 @@ CodeCaptionListWindow >> initializePresenters [
 		addColumn: (SpStringTableColumn title: 'Comment' evaluated: #comment);
 		addColumn: (SpStringTableColumn title: 'Author' evaluated: #author);
 		addColumn: (SpStringTableColumn title: 'Reference' evaluated: #nodeFound);
+		addColumn: (SpStringTableColumn title: 'Date' evaluated: #timeStamp);
 		activateOnDoubleClick;
 		contextMenu:
 			(SpMenuPresenter new

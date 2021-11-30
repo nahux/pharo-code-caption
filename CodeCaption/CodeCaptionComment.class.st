@@ -12,7 +12,8 @@ Class {
 		'captionNode',
 		'nodeFound',
 		'comment',
-		'author'
+		'author',
+		'timeStamp'
 	],
 	#category : #'CodeCaption-Caption'
 }
@@ -23,6 +24,7 @@ CodeCaptionComment class >> newWithNode:aProgramNode package: anASTPackage metho
 		package: anASTPackage;
 		captionSource: ((CodeCaptionSource new) node: aProgramNode; methodNode: aMethodNode; nodeClass: aMethodNode methodClass);
 		repository: anIceLibgitRepository ;
+		timeStamp: DateAndTime now;
 		yourself.
 ]
 
@@ -126,4 +128,16 @@ CodeCaptionComment >> repository [
 { #category : #accessing }
 CodeCaptionComment >> repository: anObject [
 	repository := anObject
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> timeStamp [
+
+	^ timeStamp
+]
+
+{ #category : #accessing }
+CodeCaptionComment >> timeStamp: anObject [
+
+	timeStamp := anObject
 ]
