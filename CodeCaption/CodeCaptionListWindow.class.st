@@ -6,6 +6,7 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'ccList',
+		'btnRefresh',
 		'codeCaptionProject'
 	],
 	#category : #'CodeCaption-UI'
@@ -15,6 +16,9 @@ Class {
 CodeCaptionListWindow class >> defaultSpec [
 	^SpBoxLayout newVertical
 		add: #ccList;
+		add: (SpBoxLayout newHorizontal
+				add: #btnRefresh width: 60;
+				yourself) height: 30;
 		yourself
 ]
 
@@ -24,9 +28,29 @@ CodeCaptionListWindow >> codeCaptionProject [
 ]
 
 { #category : #initialization }
+CodeCaptionListWindow >> connectPresenters [
+
+	"Add the CodeCaption to the project and open the project window"
+
+	| repository |
+	btnRefresh action: [ 
+		repository := CodeCaptionProject getRepositoryForPackageName:
+			              codeCaptionProject packages anyOne name.
+		repository isNotNil ifTrue: [ 
+			repository repositoryDirectory isNotNil ifTrue: [ 
+				codeCaptionProject := CodeCaptionProject
+					                      loadProject:
+					                      (CodeCaptionProject 
+						                       codeCaptionsDirectoryForRepository:
+						                       repository)
+					                      packages: repository workingCopy packages ] ] ]
+]
+
+{ #category : #initialization }
 CodeCaptionListWindow >> initializePresenters [
 	"Initialize the window layout"
-
+	btnRefresh := self newButton.
+	btnRefresh label: 'Refresh'.
 	ccList := self newTable.
 	ccList
 		addColumn: (SpStringTableColumn title: 'Method' evaluated: #fullMethodName);
@@ -35,6 +59,7 @@ CodeCaptionListWindow >> initializePresenters [
 		addColumn: (SpStringTableColumn title: 'Reference' evaluated: #nodeFound);
 		addColumn: (SpStringTableColumn title: 'Date' evaluated: #timeStamp);
 		activateOnDoubleClick;
+		beResizable;
 		contextMenu:
 			(SpMenuPresenter new
 				addItem: [ :item | 
@@ -54,7 +79,7 @@ CodeCaptionListWindow >> initializeWindow: aWindowPresenter [
 	aWindowPresenter title: 'List of CodeCaption for ', codeCaptionProject gitDirectory .
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 CodeCaptionListWindow >> setModelBeforeInitialization: aCodeCaptionProject [
 	super setModelBeforeInitialization: aCodeCaptionProject.
 	self class
