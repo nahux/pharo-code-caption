@@ -28,14 +28,19 @@ CodeCaptionProject class >> getRepositoryForPackageName: aPackageName [
 
 { #category : #'instance creation' }
 CodeCaptionProject class >> loadProject: aFilePath packages: icePackages [
-	| working_dir fstream project |
+	| working_dir fstream project package|
 	working_dir := FileSystem disk workingDirectory.
 	(working_dir / aFilePath) exists
 		ifTrue: [ 
 			fstream := (working_dir / aFilePath) readStream.
 			project := STON fromString: fstream contents.
 			"Load all CodeCaptions for all project packages"
-			icePackages do: [ :p | project loadNodesForPackage: (RPackage named: p packageName) ].
+			icePackages do: [ :p |
+				package := RPackageOrganizer default packageNamed: p packageName ifAbsent: [ nil ].
+				package ifNotNil: [ 
+					project loadNodesForPackage: package 	
+				]
+			].
 			^ project 
 		]
 		ifFalse: [ ^ nil ]
@@ -85,25 +90,27 @@ CodeCaptionProject >> loadNodesForPackage: aPackage [
 	| allMethods foundMethod |
 	allMethods := aPackage methods.
 	codeCaptions
-		do: [ :c | 
-			c package: aPackage.
-			c captionSource node isString
-				ifTrue: [ c captionSource node: (Object readFrom: c captionSource node) ].
-			c captionSource methodNode isString
-				ifTrue: [ c captionSource
+		do: [ :c |
+			(RPackageOrganizer default packageNamed: (c package name)) == aPackage ifTrue: [
+				c captionSource node isString
+					ifTrue: [ c captionSource node: (Object readFrom: c captionSource node) ].
+				c captionSource methodNode isString
+					ifTrue: [ c captionSource
 						methodNode: (Object readFrom: c captionSource methodNode) ].
-			foundMethod := nil.
-			allMethods
-				do: [ :pm | 
-					"Check if method and class pairing from CodeCaption File exists in the source code"
-					(pm methodNode selector = c captionSource methodNode selector
-						and: pm methodNode methodClass = c captionSource nodeClass)
-						ifTrue: [ foundMethod := pm methodNode ] ].
-			foundMethod
-				ifNotNil: [ c captionSource methodNode: foundMethod.
+				foundMethod := nil.
+				allMethods
+					do: [ :pm | 
+						"Check if method and class pairing from CodeCaption File exists in the source code"
+						(pm methodNode selector = c captionSource methodNode selector
+							and: pm methodNode methodClass = c captionSource nodeClass)
+							ifTrue: [ foundMethod := pm methodNode ] ].
+				foundMethod
+					ifNil: [ c nodeFound: false ]
+					ifNotNil: [ c captionSource methodNode: foundMethod.
 					"Search the CodeCaptionComment node in the methodNode to see if it was modified"
-					c
-						nodeFound: (self method: foundMethod hasNode: c captionSource node) ] ]
+						c nodeFound: (self method: foundMethod hasNode: c captionSource node) ] 
+			].
+		]
 ]
 
 { #category : #helper }
