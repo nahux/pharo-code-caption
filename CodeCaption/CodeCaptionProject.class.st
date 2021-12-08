@@ -36,7 +36,7 @@ CodeCaptionProject class >> loadProject: aFilePath packages: icePackages [
 			project := STON fromString: fstream contents.
 			"Load all CodeCaptions for all project packages"
 			icePackages do: [ :p |
-				package := RPackageOrganizer default packageNamed: p packageName ifAbsent: [ nil ].
+				package := RPackage organizer packageNamed: p packageName ifAbsent: [ nil ].
 				package ifNotNil: [ 
 					project loadNodesForPackage: package 	
 				]
@@ -91,7 +91,7 @@ CodeCaptionProject >> loadNodesForPackage: aPackage [
 	allMethods := aPackage methods.
 	codeCaptions
 		do: [ :c |
-			(RPackageOrganizer default packageNamed: (c package name)) == aPackage ifTrue: [
+			(RPackage organizer packageNamed: (c package name)) == aPackage ifTrue: [
 				c captionSource node isString
 					ifTrue: [ c captionSource node: (Object readFrom: c captionSource node) ].
 				c captionSource methodNode isString

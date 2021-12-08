@@ -43,7 +43,8 @@ CodeCaptionListWindow >> connectPresenters [
 					                      (CodeCaptionProject 
 						                       codeCaptionsDirectoryForRepository:
 						                       repository)
-					                      packages: repository workingCopy packages ] ] ]
+					                      packages: repository workingCopy packages ] ].
+		self updatePresenter ]
 ]
 
 { #category : #initialization }
