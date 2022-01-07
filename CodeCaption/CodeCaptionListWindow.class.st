@@ -22,6 +22,15 @@ CodeCaptionListWindow class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #action }
+CodeCaptionListWindow >> browseMethod: aCodeCaption [
+
+	[(aCodeCaption captionSource nodeClass
+	 >> ccList selectedItem captionSource methodNode selector asSymbol)
+		compiledMethod browse] on: Error do: [self inform: 'The method is no longer accesible'].
+	
+]
+
 { #category : #'accessing model' }
 CodeCaptionListWindow >> codeCaptionProject [
 	^ codeCaptionProject 
@@ -68,7 +77,7 @@ CodeCaptionListWindow >> initializePresenters [
 						name: 'Browse';
 						icon: (self iconNamed: #browse); "TODO: not working"
 						action: [
-							((ccList selectedItem captionSource nodeClass)>>(ccList selectedItem captionSource methodNode selector asSymbol)) compiledMethod browse
+							self browseMethod: ccList selectedItem
 						]
 				]);
 		whenActivatedDo:
