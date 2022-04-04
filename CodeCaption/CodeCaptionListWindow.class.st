@@ -39,8 +39,6 @@ CodeCaptionListWindow >> codeCaptionProject [
 { #category : #initialization }
 CodeCaptionListWindow >> connectPresenters [
 
-	"Add the CodeCaption to the project and open the project window"
-
 	| repository |
 	btnRefresh action: [ 
 		repository := CodeCaptionProject getRepositoryForPackageName:
